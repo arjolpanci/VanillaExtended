@@ -67,15 +67,16 @@ public class LordStaff extends net.minecraft.item.Item {
         if(cap != null){
             cap.updateCooldown();
         }
-        if(stack.getTag() == null){
-            stack.setTag(getShareTag(stack));
-        }
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
         ICoolDownItem cap = stack.getCapability(CapabilityRegistry.COOLDOWN_ITEM, null).orElse(null);
+
+        if(stack.getTag() == null){
+            stack.setTag(getShareTag(stack));
+        }
 
         if(!worldIn.isRemote && cap.isOffCooldown()){
             if(hasHeads(playerIn) || playerIn.abilities.isCreativeMode){
