@@ -1,0 +1,6 @@
+{
+    "parent": "item/bow",
+    "textures": {
+        "layer0": "vanillaextended:item/king_bow_pulling_0"
+    }
+}

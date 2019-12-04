@@ -1,0 +1,13 @@
+{
+  "item.vanillaextended.test_item": "Test Item",
+  "item.vanillaextended.flint_axe": "Flint Axe",
+  "item.vanillaextended.flint_pickaxe": "Flint Pickaxe",
+  "item.vanillaextended.flint_shovel": "Flint Shovel",
+  "item.vanillaextended.flint_hoe": "Flint Hoe",
+  "item.vanillaextended.flint_sword": "Flint Sword",
+  "item.vanillaextended.lost_miner_egg": "Lost Miner Egg",
+  "item.vanillaextended.king_bow": "Skeleton King Bow",
+  "item.vanillaextended.zombie_lord_staff": "Zombie Lord Staff",
+  "entity.vanillaextended.lost_miner": "Lost Miner",
+  "entity.vanillaextended.skeleton_king": "Skeleton King"
+}
