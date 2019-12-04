@@ -49,7 +49,6 @@ public class VanillaExtended
         DispenserBlock.registerDispenseBehavior(Items.WHEAT_SEEDS, new SeedBehaviour());
         DispenserBlock.registerDispenseBehavior(Items.BEETROOT_SEEDS, new BeetRootBehavior());
         CapabilityRegistry.registerCapabilities();
-        PacketHandler.registerMessages();
         //LOGGER.info("HELLO FROM PREINIT");
     }
 

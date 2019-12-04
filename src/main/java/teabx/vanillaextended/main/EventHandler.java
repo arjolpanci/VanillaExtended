@@ -2,6 +2,7 @@ package teabx.vanillaextended.main;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,19 +44,19 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void CapabilityAttachPlayer(AttachCapabilitiesEvent<Entity> event){
-        if(event.getObject().getEntity() instanceof PlayerEntity){
-            event.addCapability(VanillaExtended.rloc("playerrank"), new PlayerRank());
-        }
+        if(!(event.getObject().getEntity() instanceof PlayerEntity)) return;
+        event.addCapability(VanillaExtended.rloc("rank"), new PlayerRank());
     }
 
     @SubscribeEvent
     public static void LivingHurt(LivingHurtEvent event){
-        if(event.getEntity() instanceof PlayerEntity){
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            IRank rank = player.getCapability(CapabilityRegistry.PLAYER_RANK, null).orElse(null);
+        if(event.getEntityLiving() instanceof PlayerEntity){
+            IRank rank = event.getEntityLiving().getCapability(CapabilityRegistry.PLAYER_RANK, null).orElse(null);
             if(rank != null){
                 int rnk = rank.getRank();
-                player.attackEntityFrom(DamageSource.GENERIC, event.getAmount()*rnk);
+                float damage = event.getAmount();
+                float newVal = (float) (damage + 2*damage);
+                event.setAmount(newVal);
             }
 
         }

@@ -29,6 +29,7 @@ public class CapabilityRegistry {
 
     public static void registerCapabilities(){
         CapabilityManager.INSTANCE.register(ICoolDownItem.class, new CoolDownItemStorage() ,CoolDownItem::new);
+        CapabilityManager.INSTANCE.register(IRank.class, new PlayerRankStorage(), PlayerRank::new);
     }
 
     public static class PlayerRankStorage implements Capability.IStorage<IRank>{

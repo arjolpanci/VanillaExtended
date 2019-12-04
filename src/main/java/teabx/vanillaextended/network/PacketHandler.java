@@ -24,12 +24,7 @@ public class PacketHandler {
     );
 
     public static void registerMessages(){
-        INSTANCE.registerMessage(index++, CoolDownPacket.class, CoolDownPacket::encode,
-                CoolDownPacket::decode, CoolDownPacket::handle);
-    }
 
-    public static void sendMessage(CoolDownPacket cdpkt){
-        INSTANCE.send(PacketDistributor.ALL.noArg(), cdpkt);
     }
 
 }
