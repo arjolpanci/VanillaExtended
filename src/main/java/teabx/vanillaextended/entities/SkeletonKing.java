@@ -79,11 +79,8 @@ public class SkeletonKing extends MonsterEntity implements IRangedAttackMob {
             double d2 = target.posZ - this.posZ;
             double d3 = (double) MathHelper.sqrt((d0*d0 + d2*d2));
 
-            if(i!=2){
-                arrow.shoot(d0 + Math.pow(2.0D, i), d1 + d3 * (double)0.2F, d2 , 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
-            }else{
-                arrow.shoot(d0, d1 + d3 * (double)0.2F, d2 + 2.0F, 1.6F, (float)(14 - this.world.getDifficulty().getId() * 4));
-            }
+            arrow.shoot(d0 , d1 + d3 * (double)0.2F, d2, 1.6F, (float)(10 - this.world.getDifficulty().getId()));
+
             this.world.addEntity(arrow);
         }
 
@@ -132,11 +129,11 @@ public class SkeletonKing extends MonsterEntity implements IRangedAttackMob {
     public boolean isEntityUndead() { return true; }
 
     @Override
-    public double getYOffset() { return -0.6D; }
+    public double getYOffset() { return -0.6; }
 
     @Override
     public EntitySize getSize(Pose poseIn) {
-        return super.getSize(poseIn).scale(1.5F);
+        return super.getSize(poseIn).scale(1.5F, 1.7F);
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
@@ -59,6 +60,17 @@ public class EventHandler {
                 event.setAmount(newVal);
             }
 
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event){
+        PlayerEntity player = event.getPlayer();
+        if(player != null){
+            Item item = player.getHeldItemMainhand().getItem();
+            if(item instanceof LordStaff){
+                event.setCanceled(true);
+            }
         }
     }
 

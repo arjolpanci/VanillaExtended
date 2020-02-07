@@ -47,7 +47,7 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
         this.right_leg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, 0.0F);
 
         this.right_arm = new RendererModel(this, 40, 16);
-        this.right_arm.setRotationPoint(-5.0F, 2.0F  - 4.0F, 0.0F);
+        this.right_arm.setRotationPoint(-5.0F, 2.0F  - 8.0F, 0.0F);
         this.right_arm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, 0.0F);
         this.setRotateAngle(right_arm, 0.0F, 0.0F - 4.0F, 0.10000736613927509F);
         this.left_arm = new RendererModel(this, 40, 16);
@@ -112,24 +112,31 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
     public void postRenderArm(float scale, HandSide side) {
         float f = side == HandSide.RIGHT ? 0.5F : -0.5F;
         RendererModel renderermodel = this.right_arm;
-        renderermodel.rotationPointX += f;
-        renderermodel.rotationPointY += f + 3.5F;
+        renderermodel.rotationPointX += f-0.1F;
+        renderermodel.rotationPointZ -= 2.2F*f;
+        renderermodel.rotationPointY += f - 0.5F;
         renderermodel.postRender(scale * 1.5F);
-        renderermodel.rotationPointX -= f;
-        renderermodel.rotationPointY -= f + 3.5F;
+        renderermodel.rotationPointX -= f-0.1F;
+        renderermodel.rotationPointZ += 2.2F*f;
+        renderermodel.rotationPointY -= f - 0.5F;
     }
 
     @Override
     public void setRotationAngles(SkeletonKing entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
         super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
+        this.right_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / 1.0F;
+        this.left_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / 1.0F;
+        this.right_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 0.6F * limbSwingAmount / 1.0F;
+        this.left_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.5F * limbSwingAmount / 1.0F;
+
         if(entityIn.isAggressive()){
             float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
             float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
-            this.right_arm.rotateAngleZ = 0.0F;
-            this.left_arm.rotateAngleZ = 0.0F;
-            this.right_arm.rotateAngleY = -(0.1F - f * 0.6F);
-            this.left_arm.rotateAngleY = 0.1F - f * 0.6F;
+            this.right_arm.rotateAngleZ = 0F;
+            this.left_arm.rotateAngleZ = 0F;
+            this.right_arm.rotateAngleY = -(0.3F - f * 0.6F);
+            this.left_arm.rotateAngleY = 0.3F - f * 0.6F;
             this.right_arm.rotateAngleX = (-(float)Math.PI / 2F);
             this.left_arm.rotateAngleX = (-(float)Math.PI / 2F);
             this.right_arm.rotateAngleX -= f * 1.2F - f1 * 0.4F;
@@ -141,9 +148,5 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
 
         }
 
-        this.right_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / 1.0F;
-        this.left_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / 1.0F;
-        this.right_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 0.6F * limbSwingAmount / 1.0F;
-        this.left_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.5F * limbSwingAmount / 1.0F;
     }
 }

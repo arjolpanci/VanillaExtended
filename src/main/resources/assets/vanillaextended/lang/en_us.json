@@ -8,6 +8,8 @@
   "item.vanillaextended.lost_miner_egg": "Lost Miner Egg",
   "item.vanillaextended.king_bow": "Skeleton King Bow",
   "item.vanillaextended.zombie_lord_staff": "Zombie Lord Staff",
+  "item.vanillaextended.collective_storage": "Collective Storage",
+  "block.vanillaextended.collective_storage": "Collective Storage",
   "entity.vanillaextended.lost_miner": "Lost Miner",
   "entity.vanillaextended.skeleton_king": "Skeleton King"
 }

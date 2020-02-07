@@ -3,6 +3,7 @@ package teabx.vanillaextended.entities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
@@ -21,6 +22,8 @@ public class EntityRegistry {
             .build("lost_miner").setRegistryName(VanillaExtended.rloc("lost_miner"));
     public static EntityType<?> SKELETON_KING = EntityType.Builder.create(SkeletonKing::new, EntityClassification.MONSTER)
             .build("skeleton_king").setRegistryName(VanillaExtended.rloc("skeleton_king"));
+    public static EntityType<ZombieEntity> STAFF_ZOMBIE = (EntityType<ZombieEntity>) EntityType.Builder.create(StaffZombie::new, EntityClassification.MONSTER)
+            .build("staff_zombie").setRegistryName(VanillaExtended.rloc("staff_zombie"));
 
     //Item Eggs
     public static Item lost_miner_egg;
@@ -40,9 +43,6 @@ public class EntityRegistry {
             }
         }
     }
-
-
-
 
     public static Item generateSpawnEgg(EntityType<?> e, int col1, int col2, String name){
         SpawnEggItem egg = new SpawnEggItem(e, col1, col2, new Item.Properties().group(ItemGroup.MISC));

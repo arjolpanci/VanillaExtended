@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
 import teabx.vanillaextended.capabilities.interfaces.ICoolDownItem;
@@ -57,7 +58,7 @@ public class LordStaff extends net.minecraft.item.Item {
         if(cap != null){
             cd = cap.getCooldown();
         }
-        return 1-(cd/3.0);
+        return 1-(cd/cap.getMaxCooldown());
     }
 
     @Override
@@ -84,6 +85,8 @@ public class LordStaff extends net.minecraft.item.Item {
                 StaffZombie zm = new StaffZombie(worldIn, playerIn);
                 zm.setPosition(playerIn.posX + rn.nextDouble() * 2, playerIn.posY, playerIn.posZ + rn.nextDouble() * 2);
                 zm.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(Items.GOLDEN_HELMET));
+                zm.setCustomNameVisible(true);
+                zm.addTag("Staff Zombie");
                 worldIn.addEntity(zm);
                 for(int i = 0; i<36; i++){
                     if(playerIn.inventory.getStackInSlot(i).getItem() == Items.ZOMBIE_HEAD && !playerIn.abilities.isCreativeMode){

@@ -2,6 +2,8 @@ package teabx.vanillaextended.main;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.*;
 import net.minecraft.util.ResourceLocation;
@@ -14,13 +16,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import teabx.vanillaextended.blocks.BlockList;
+import teabx.vanillaextended.blocks.CollectiveStorage;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
 import teabx.vanillaextended.client.renders.RenderRegistry;
 import teabx.vanillaextended.entities.EntityRegistry;
 import teabx.vanillaextended.items.ItemList;
 import teabx.vanillaextended.items.KingBow;
 import teabx.vanillaextended.items.LordStaff;
-import teabx.vanillaextended.network.PacketHandler;
 import teabx.vanillaextended.tools.ToolList;
 import teabx.vanillaextended.tools.ToolMaterial;
 
@@ -58,19 +61,20 @@ public class VanillaExtended
         //LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = VanillaExtended.modid, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
 
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
-
+            BlockList.collectiveStorage = new CollectiveStorage(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).harvestLevel(2)).setRegistryName(rloc("collective_storage"));
         }
 
         @SubscribeEvent
         public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event){
             event.getRegistry().registerAll(
                     EntityRegistry.LOST_MINER,
-                    EntityRegistry.SKELETON_KING
+                    EntityRegistry.SKELETON_KING,
+                    EntityRegistry.STAFF_ZOMBIE
             );
         }
 
@@ -84,8 +88,8 @@ public class VanillaExtended
                     ToolList.flint_hoe = new HoeItem(ToolMaterial.flint, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_hoe")),
                     ToolList.flint_sword = new SwordItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_sword")),
                     ItemList.king_bow = new KingBow(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("king_bow")),
-                    ItemList.lord_staff = new LordStaff(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("zombie_lord_staff"))
-
+                    ItemList.lord_staff = new LordStaff(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("zombie_lord_staff")),
+                    ItemList.collective_storage = new BlockItem(BlockList.collectiveStorage, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.collectiveStorage.getRegistryName())
             );
 
             EntityRegistry.registerSpawnEggs(event);
