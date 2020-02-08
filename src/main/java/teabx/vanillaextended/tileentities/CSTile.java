@@ -3,9 +3,9 @@ package teabx.vanillaextended.tileentities;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.StorageBlock;
 import java.util.ArrayList;
-import static teabx.vanillaextended.blocks.BlockList.CSTileType;
 
 public class CSTile extends TileEntity {
 
@@ -13,7 +13,7 @@ public class CSTile extends TileEntity {
     private StorageBlock sb;
 
     public CSTile() {
-        super(CSTileType);
+        super(BlockList.CSTileType);
     }
 
     public ArrayList<TileEntity> getConnectedTiles(){
