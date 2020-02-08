@@ -1,6 +1,5 @@
 package teabx.vanillaextended.items;
 
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 
 public class ItemList {
@@ -12,5 +11,5 @@ public class ItemList {
 
     //Block Items
     public static Item collective_storage;
-
+    public static Item transport_pipe;
 }
