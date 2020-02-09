@@ -23,10 +23,11 @@ public class TPTile extends TileEntity {
 
     public void updateStorageBlock(){
         if(this.sb == null){
-            for(TileEntity te : getConnectedTiles()){
-                if(te != null && te instanceof CSTile){
+            update();
+            for(TileEntity te : connectedTiles){
+                if(te instanceof CSTile){
                     this.setSb(((CSTile) te).getSb());
-                }else if(te != null && te instanceof TPTile){
+                }else if(te instanceof TPTile){
                     if(this.getSb() != null){
                         ((TPTile) te).setSb(this.getSb());
                         ((TPTile) te).updateStorageBlock();
@@ -38,7 +39,6 @@ public class TPTile extends TileEntity {
 
     public void update(){
         connectedTiles.clear();
-        connectedTiles.add(this);
         for(int i=0; i<3; i++){
             for(int j=-1; j<=1; j++){
                 if(j==0) continue;
@@ -69,6 +69,7 @@ public class TPTile extends TileEntity {
     }
 
     public void setSb(StorageBlock sb) {
+        sb.add(this);
         sb.addBlocks(getConnectedTiles());
         this.sb = sb;
     }

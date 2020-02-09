@@ -20,6 +20,10 @@ public class StorageBlock {
         blocks.add(master);
     }
 
+    public void add(TileEntity te){
+        blocks.add(te);
+    }
+
     public ArrayList<TPTile> getPipes() {
         ArrayList<TPTile> pipes = new ArrayList<>();
         for (TileEntity te : blocks) {

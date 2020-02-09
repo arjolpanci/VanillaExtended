@@ -87,8 +87,8 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event){
             event.getRegistry().registerAll(
-                    TileEntityType.Builder.create(CSTile::new, BlockList.collectiveStorage).build(null).setRegistryName(rloc("collective_storage_tile")),
-                    TileEntityType.Builder.create(TPTile::new, BlockList.transportPipe).build(null).setRegistryName(rloc("transport_pipe_tile"))
+                    BlockList.CSTileType = TileEntityType.Builder.create(CSTile::new, BlockList.collectiveStorage).build(null).setRegistryName(rloc("collective_storage")),
+                    BlockList.TPTileType = TileEntityType.Builder.create(TPTile::new, BlockList.transportPipe).build(null).setRegistryName(rloc("transport_pipe"))
             );
         }
 

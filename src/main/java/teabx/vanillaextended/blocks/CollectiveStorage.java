@@ -18,6 +18,7 @@ import teabx.vanillaextended.tileentities.CSTile;
 import teabx.vanillaextended.tileentities.TPTile;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class CollectiveStorage extends Block {
 
@@ -31,9 +32,10 @@ public class CollectiveStorage extends Block {
         CSTile tile = (CSTile) worldIn.getTileEntity(pos);
         if(tile != null){
             tile.setSb(new StorageBlock(tile));
-            for(TileEntity te : tile.getConnectedTiles()){
-                if(te instanceof TPTile){
-                    ((TPTile) te).updateStorageBlock();
+            ArrayList<TileEntity> connectedTiles = tile.getConnectedTiles();
+            for(int i=0; i<connectedTiles.size(); i++){
+                if(connectedTiles.get(i) instanceof TPTile){
+                    ((TPTile) connectedTiles.get(i)).updateStorageBlock();
                 }
             }
         }
