@@ -4,10 +4,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import teabx.vanillaextended.blocks.BlockList;
+import teabx.vanillaextended.blocks.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
 import java.util.ArrayList;
 
-public class CSTile extends TileEntity {
+public class CSTile extends TileEntity implements IStorageBlockPart {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -52,11 +53,14 @@ public class CSTile extends TileEntity {
         return pos;
     }
 
-    public void setSb(StorageBlock sb) {
-        this.sb = sb;
-    }
 
+    @Override
     public StorageBlock getSb() {
         return sb;
+    }
+
+    @Override
+    public void setSb(StorageBlock sb) {
+        this.sb = sb;
     }
 }

@@ -27,32 +27,15 @@ public class TransportPipe extends Block{
     }
 
     @Override
-    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        /*TPTile tile = (TPTile) worldIn.getTileEntity(pos);
-        if(tile != null){
-            ArrayList<Block> blist = tile.getConnectedBloks();
-            if(!worldIn.isRemote){
-                for(Block b : blist){
-                    System.out.println(b);
-                }
-            }
-            System.out.println(blist.size());
-        }*/
-        return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
-    }
-
-    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
         TPTile tile = (TPTile) worldIn.getTileEntity(pos);
         if(tile != null){
+            tile.replaceSb(null);
             ArrayList<TileEntity> tiles = tile.getConnectedTiles();
             for(TileEntity te : tiles){
-                if(te instanceof TPTile){
-                    if(((TPTile) te).getSb() != null){
-                        ((TPTile) te).getSb().addBlocks(tiles);
-                        tile.setSb(((TPTile) te).getSb());
-                    }
+                if(te instanceof IStorageBlockPart){
+                    if(((IStorageBlockPart) te).getSb() != null) tile.setSb(((IStorageBlockPart) te).getSb());
                 }
             }
         }

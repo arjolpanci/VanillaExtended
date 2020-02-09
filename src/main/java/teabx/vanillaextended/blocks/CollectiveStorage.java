@@ -27,26 +27,28 @@ public class CollectiveStorage extends Block {
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        CSTile tile = (CSTile) worldIn.getTileEntity(pos);
-        if(tile != null){
-            tile.setSb(new StorageBlock(tile));
-            ArrayList<TileEntity> connectedTiles = tile.getConnectedTiles();
-            for(int i=0; i<connectedTiles.size(); i++){
-                if(connectedTiles.get(i) instanceof TPTile){
-                    ((TPTile) connectedTiles.get(i)).updateStorageBlock();
-                }
-            }
-        }
-    }
-
-    @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         CSTile tile = (CSTile) worldIn.getTileEntity(pos);
-        for(IInventory s : tile.getSb().getChests()){
-            System.out.println(s);
+        tile.setSb(new StorageBlock(tile));
+        ArrayList<TileEntity> connectedTiles = tile.getConnectedTiles();
+        for(int i=0; i<connectedTiles.size(); i++){
+            if(connectedTiles.get(i) instanceof TPTile){
+                ((TPTile) connectedTiles.get(i)).setSb(tile.getSb());
+            }
         }
+        tile.getSb().update();
+        for(IInventory s : tile.getSb().getChests()){
+            if(!worldIn.isRemote){
+                System.out.println(s);
+                System.out.println("Size: " + tile.getSb().getTiles().size());
+            }
+        }
+        for(ItemStack stack : tile.getSb().getItems()){
+            if(!worldIn.isRemote){
+                System.out.println(stack);
+            }
+        }
+        System.out.println("Size: " + tile.getSb().getTiles());
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 
