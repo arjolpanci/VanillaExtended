@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import teabx.vanillaextended.blocks.BlockList;
-import teabx.vanillaextended.blocks.IStorageBlockPart;
+import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
 import java.util.ArrayList;
 
@@ -23,19 +23,6 @@ public class TPTile extends TileEntity implements IStorageBlockPart {
     }
 
     public void updateStorageBlock(){
-        /*if(this.sb == null){
-            update();
-            for(TileEntity te : connectedTiles){
-                if(te instanceof CSTile){
-                    this.setSb(((CSTile) te).getSb());
-                }else if(te instanceof TPTile){
-                    if(this.getSb() != null){
-                        ((TPTile) te).setSb(this.getSb());
-                        ((TPTile) te).updateStorageBlock();
-                    }
-                }
-            }
-        }*/
         for(TileEntity te : getConnectedTiles()){
             if(te instanceof TPTile){
                 ((TPTile) te).setSb(this.getSb());
@@ -78,9 +65,6 @@ public class TPTile extends TileEntity implements IStorageBlockPart {
     public void setSb(StorageBlock sb) {
         sb.add(this);
         sb.addBlocks(getConnectedTiles());
-        //for(TileEntity te : getConnectedTiles()){
-        //    if(!(sb.getTiles().contains(te))) sb.add(te);
-        //}
         this.sb = sb;
     }
 

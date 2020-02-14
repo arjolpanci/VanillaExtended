@@ -2,12 +2,9 @@ package teabx.vanillaextended.main;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biomes;
@@ -39,7 +36,7 @@ public class EventHandler {
     @SubscribeEvent
     public static void CapabilityAttachItemStack(AttachCapabilitiesEvent<ItemStack> event){
         if(event.getObject().getItem() instanceof LordStaff){
-            event.addCapability(new ResourceLocation(VanillaExtended.modid, "cooldownitem"), new CoolDownItem());
+            event.addCapability(new ResourceLocation(VanillaExtended.MODID, "cooldownitem"), new CoolDownItem());
         }
     }
 

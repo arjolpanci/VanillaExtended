@@ -1,14 +1,23 @@
 package teabx.vanillaextended.tileentities;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import teabx.vanillaextended.blocks.BlockList;
-import teabx.vanillaextended.blocks.IStorageBlockPart;
+import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
+import teabx.vanillaextended.container.CollectiveStorageContainer;
+
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class CSTile extends TileEntity implements IStorageBlockPart {
+public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -62,5 +71,16 @@ public class CSTile extends TileEntity implements IStorageBlockPart {
     @Override
     public void setSb(StorageBlock sb) {
         this.sb = sb;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return new StringTextComponent("Collective Storage");
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new CollectiveStorageContainer(id, world, pos, playerInventory);
     }
 }

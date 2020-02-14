@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.network.NetworkHooks;
 import teabx.vanillaextended.tileentities.CSTile;
 import teabx.vanillaextended.tileentities.TPTile;
 
@@ -37,18 +39,10 @@ public class CollectiveStorage extends Block {
             }
         }
         tile.getSb().update();
-        for(IInventory s : tile.getSb().getChests()){
-            if(!worldIn.isRemote){
-                System.out.println(s);
-                System.out.println("Size: " + tile.getSb().getTiles().size());
-            }
+
+        if(!worldIn.isRemote){
+            NetworkHooks.openGui((ServerPlayerEntity) player, tile, tile.getPos());
         }
-        for(ItemStack stack : tile.getSb().getItems()){
-            if(!worldIn.isRemote){
-                System.out.println(stack);
-            }
-        }
-        System.out.println("Size: " + tile.getSb().getTiles());
         return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
     }
 

@@ -1,15 +1,15 @@
 package teabx.vanillaextended.blocks;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import teabx.vanillaextended.tileentities.CSTile;
 import teabx.vanillaextended.tileentities.TPTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class StorageBlock {
@@ -39,23 +39,16 @@ public class StorageBlock {
     public ArrayList<IInventory> getChests() {
         ArrayList<IInventory> chests = new ArrayList<>();
         for (TileEntity te : blocks) {
-            if (te instanceof IInventory) chests.add((IInventory) te);
+            Block b = te.getBlockState().getBlock();
+            if(b instanceof ChestBlock){
+                chests.add(((ChestBlock)b).getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
+            }
         }
         return chests;
     }
 
     public ArrayList<TileEntity> getTiles() {
         return blocks;
-    }
-
-    public ArrayList<ItemStack> getItems() {
-        ArrayList<ItemStack> items = new ArrayList<>();
-        for(IInventory i : getChests()){
-            for(int j=0; j<i.getSizeInventory(); j++){
-                if(!(i.getStackInSlot(j).equals(new ItemStack(Items.AIR)))) items.add(i.getStackInSlot(j));
-            }
-        }
-        return items;
     }
 
     public void update(){
