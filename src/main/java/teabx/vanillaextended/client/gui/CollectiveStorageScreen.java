@@ -44,12 +44,10 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
     @Override
     public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
         if(this.isScrolling){
-            if(p_mouseDragged_3_ >= guiTop + 18 && p_mouseDragged_3_ <= guiTop + 124 - 36){
-                currentScroll = (int) p_mouseDragged_3_;
-                currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 24);
-                buttons.get(0).y = currentScroll;
-                container.updateSlots(map(currentScroll));
-            }
+            currentScroll = (int) p_mouseDragged_3_;
+            currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
+            buttons.get(0).y = currentScroll;
+            container.updateSlots(map(currentScroll));
         }
         return super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
     }
@@ -65,8 +63,8 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
 
     @Override
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
-        currentScroll = (int) (currentScroll - (p_mouseScrolled_5_ / (container.getInvSize()/8)));
-        currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 24);
+        currentScroll = (int) (currentScroll - (p_mouseScrolled_5_ / (container.getInvSize()/5)));
+        currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
         buttons.get(0).y = currentScroll;
         container.updateSlots(map(currentScroll));
         return false;
@@ -81,8 +79,8 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
         this.blit(i, j, 0, 0, this.xSize, this.ySize, 512, 512);
     }
 
-    private int map(int pos){
-        int map_max = (container.getInvSize()/9) - 5;
+    private int map(double pos){
+        int map_max = (container.getInvSize()+1/9) - 6;
         double l = this.guiTop + 18;
         double h = this.guiTop + 124 - 36;
         double n = (pos - l);
