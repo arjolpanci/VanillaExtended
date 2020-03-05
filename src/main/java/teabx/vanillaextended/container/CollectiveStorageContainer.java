@@ -28,8 +28,8 @@ public class CollectiveStorageContainer extends Container {
 
     public void updateSlots(int offset){
         inventorySlots.clear();
-        int startingIndex = offset*9;
-        ArrayList<Slot> slots = tile.getSb().getSlots();
+        if(offset <= 0) offset = 0;
+        int startingIndex = (offset)*9;
 
         for(int i=0; i<3; i++){
             for(int j=0; j<9; j++){
@@ -41,19 +41,34 @@ public class CollectiveStorageContainer extends Container {
             this.addSlot(new Slot( pi, i, 198 + i*18, 88));
         }
 
+        ArrayList<Slot> itemSlots = new ArrayList<>(tile.getSb().getItemSlots());
+        ArrayList<Slot> emptySlots = new ArrayList<>(tile.getSb().getEmptySlots());
+        System.out.println(emptySlots.size());
+        int maxItemIndex = itemSlots.size() - 1;
+        int emptyIndex = 0;
+        int maxEmptyIndex = emptySlots.size() - 1;
+        
         for(int i=0; i<6; i++) {
             for (int j = 0; j < 9; j++) {
-                if(startingIndex > getInvSize() || startingIndex < 0) return;
-                Slot slot = slots.get(startingIndex++);
-                slot.xPos = 9 + j * 18;
-                slot.yPos = 18 + i * 18;
-                this.addSlot(slot);
+                if(startingIndex > maxItemIndex || startingIndex < 0){
+                    if(emptyIndex > maxEmptyIndex) return;
+                    Slot slot = emptySlots.get(emptyIndex++);
+                    slot.xPos = 9 + j * 18;
+                    slot.yPos = 18 + i * 18;
+                    this.addSlot(slot);
+                }else{
+                    Slot slot = itemSlots.get(startingIndex++);
+                    slot.xPos = 9 + j * 18;
+                    slot.yPos = 18 + i * 18;
+                    this.addSlot(slot);
+                }
+
             }
         }
     }
 
     public int getInvSize(){
-        return tile.getSb().getSlots().size() - 1 ;
+        return tile.getSb().getInventorySize();
     }
 
     @Override

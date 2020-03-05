@@ -10,22 +10,26 @@ import teabx.vanillaextended.tileentities.TPTile;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class StorageBlock {
 
     private ArrayList<TileEntity> blocks;
-    private ArrayList<Slot> slots;
+    private LinkedHashSet<Slot> itemSlots;
+    private LinkedHashSet<Slot> emptySlots;
 
     public StorageBlock(ArrayList<TileEntity> blocks) {
         this.blocks = blocks;
-        slots = new ArrayList<>();
+        itemSlots = new LinkedHashSet<>();
+        emptySlots = new LinkedHashSet<>();
     }
 
     public StorageBlock(CSTile master){
         blocks = new ArrayList<>();
         blocks.add(master);
-        slots = new ArrayList<>();
+        itemSlots = new LinkedHashSet<>();
+        emptySlots = new LinkedHashSet<>();
     }
 
     public void add(TileEntity te){
@@ -40,13 +44,13 @@ public class StorageBlock {
         return pipes;
     }
 
-    public ArrayList<IInventory> getChests() {
+    public ArrayList<IInventory> getInventories() {
         ArrayList<IInventory> chests = new ArrayList<>();
         for (TileEntity te : blocks) {
             Block b = te.getBlockState().getBlock();
-            if(te instanceof  IInventory){
+            if(te instanceof IInventory){
                 if(b instanceof ChestBlock){
-                    chests.add(((ChestBlock)b).getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
+                    chests.add(ChestBlock.getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
                 }else{
                     chests.add((IInventory) te);
                 }
@@ -55,21 +59,19 @@ public class StorageBlock {
         return chests;
     }
 
-    public ArrayList<Slot> getSlots(){
-        slots.clear();
-        ArrayList<Slot> empty = new ArrayList<>();
-        for(IInventory i : getChests()){
-            for(int j=0; j<i.getSizeInventory(); j++){
-                Slot slot = new Slot(i, j, 0, 0);
-                if(i.getStackInSlot(j).isEmpty()){
-                    empty.add(slot);
-                    continue;
-                }
-                slots.add(slot);
-            }
-        }
-        slots.addAll(empty);
-        return slots;
+    public int getInventorySize(){
+        return (itemSlots.size()+emptySlots.size())/9;
+    }
+
+
+    public LinkedHashSet<Slot> getItemSlots(){
+        update();
+        return itemSlots;
+    }
+
+    public LinkedHashSet<Slot> getEmptySlots() {
+        update();
+        return emptySlots;
     }
 
     public ArrayList<TileEntity> getTiles() {
@@ -83,6 +85,19 @@ public class StorageBlock {
         Set<TileEntity> set = new HashSet<>(blocks);
         blocks.clear();
         blocks.addAll(set);
+
+        itemSlots.clear();
+        emptySlots.clear();
+        for(IInventory i : getInventories()){
+            for(int j=0; j<i.getSizeInventory(); j++){
+                Slot slot = new Slot(i, j, 0, 0);
+                if(slot.getStack().isEmpty()){
+                    emptySlots.add(slot);
+                }else{
+                    itemSlots.add(slot);
+                }
+            }
+        }
     }
 
     public void addBlocks(ArrayList<TileEntity> blocks) {

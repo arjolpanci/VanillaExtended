@@ -3,8 +3,9 @@ package teabx.vanillaextended.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -14,8 +15,9 @@ import teabx.vanillaextended.main.VanillaExtended;
 public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageContainer> {
 
     private static final ResourceLocation COLLECTIVE_STORAGE_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/csgui.png");
+    private static final ResourceLocation SCROLLBAR_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/scrollbar.png");
     private boolean isScrolling = false;
-    private int currentScroll;
+    private double currentScroll;
 
     public CollectiveStorageScreen(CollectiveStorageContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
@@ -27,7 +29,7 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
     @Override
     public void init(Minecraft p_init_1_, int p_init_2_, int p_init_3_) {
         super.init(p_init_1_, p_init_2_, p_init_3_);
-        Button scrollButton = new Button(guiLeft + 175, guiTop + 18, 12, 36, "|", p_onPress_1_ -> {
+        ImageButton scrollButton = new ImageButton(guiLeft + 175, guiTop + 18, 12, 36, 0, 0, 0,  SCROLLBAR_TEXTURE, p_onPress_1_ -> {
             //button stuff
         });
         scrollButton.visible = true;
@@ -43,11 +45,28 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
 
     @Override
     public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-        if(this.isScrolling){
+        /*if(this.isScrolling){
             currentScroll = (int) p_mouseDragged_3_;
             currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
             buttons.get(0).y = currentScroll;
             container.updateSlots(map(currentScroll));
+        }*/
+        if(this.isScrolling){
+            double pos = p_mouseDragged_3_;
+            double top = this.guiTop + 18;
+            double bottom = this.guiTop + 124 - 36;
+            pos = MathHelper.clamp(pos, top, bottom);
+            buttons.get(0).y = (int) pos;
+            currentScroll = (pos-top)/(bottom-top);
+            int val = (int) (currentScroll * ((container.getInvSize())-6));
+            //for(Slot s : container.tile.getSb().getEmptySlots()){
+            //    System.out.println(s.inventory);
+            //}
+            //System.out.println(container.tile.getSb().getInventories().size());
+            //for(IInventory i : container.tile.getSb().getInventories()){
+            //    System.out.println(i);
+            //}
+            container.updateSlots(val);
         }
         return super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);
     }
@@ -65,7 +84,7 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
         currentScroll = (int) (currentScroll - (p_mouseScrolled_5_ / (container.getInvSize()/5)));
         currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
-        buttons.get(0).y = currentScroll;
+        buttons.get(0).y = (int) currentScroll;
         container.updateSlots(map(currentScroll));
         return false;
     }
