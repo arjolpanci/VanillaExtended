@@ -45,12 +45,6 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
 
     @Override
     public boolean mouseDragged(double p_mouseDragged_1_, double p_mouseDragged_3_, int p_mouseDragged_5_, double p_mouseDragged_6_, double p_mouseDragged_8_) {
-        /*if(this.isScrolling){
-            currentScroll = (int) p_mouseDragged_3_;
-            currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
-            buttons.get(0).y = currentScroll;
-            container.updateSlots(map(currentScroll));
-        }*/
         if(this.isScrolling){
             double pos = p_mouseDragged_3_;
             double top = this.guiTop + 18;
@@ -59,13 +53,6 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
             buttons.get(0).y = (int) pos;
             currentScroll = (pos-top)/(bottom-top);
             int val = (int) (currentScroll * ((container.getInvSize())-6));
-            //for(Slot s : container.tile.getSb().getEmptySlots()){
-            //    System.out.println(s.inventory);
-            //}
-            //System.out.println(container.tile.getSb().getInventories().size());
-            //for(IInventory i : container.tile.getSb().getInventories()){
-            //    System.out.println(i);
-            //}
             container.updateSlots(val);
         }
         return super.mouseDragged(p_mouseDragged_1_, p_mouseDragged_3_, p_mouseDragged_5_, p_mouseDragged_6_, p_mouseDragged_8_);

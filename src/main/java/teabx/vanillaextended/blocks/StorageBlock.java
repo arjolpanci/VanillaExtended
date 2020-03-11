@@ -16,20 +16,17 @@ import java.util.Set;
 public class StorageBlock {
 
     private ArrayList<TileEntity> blocks;
-    private LinkedHashSet<Slot> itemSlots;
-    private LinkedHashSet<Slot> emptySlots;
+    private LinkedHashSet<Slot> invSlots;
 
     public StorageBlock(ArrayList<TileEntity> blocks) {
         this.blocks = blocks;
-        itemSlots = new LinkedHashSet<>();
-        emptySlots = new LinkedHashSet<>();
+        invSlots = new LinkedHashSet<>();
     }
 
     public StorageBlock(CSTile master){
         blocks = new ArrayList<>();
         blocks.add(master);
-        itemSlots = new LinkedHashSet<>();
-        emptySlots = new LinkedHashSet<>();
+        invSlots = new LinkedHashSet<>();
     }
 
     public void add(TileEntity te){
@@ -60,18 +57,12 @@ public class StorageBlock {
     }
 
     public int getInventorySize(){
-        return (itemSlots.size()+emptySlots.size())/9;
+        return (invSlots.size())/9;
     }
 
-
-    public LinkedHashSet<Slot> getItemSlots(){
+    public LinkedHashSet<Slot> getInvSlots(){
         update();
-        return itemSlots;
-    }
-
-    public LinkedHashSet<Slot> getEmptySlots() {
-        update();
-        return emptySlots;
+        return invSlots;
     }
 
     public ArrayList<TileEntity> getTiles() {
@@ -86,18 +77,20 @@ public class StorageBlock {
         blocks.clear();
         blocks.addAll(set);
 
-        itemSlots.clear();
-        emptySlots.clear();
+        ArrayList<Slot> emptySlots = new ArrayList<>();
+        invSlots.clear();
+
         for(IInventory i : getInventories()){
             for(int j=0; j<i.getSizeInventory(); j++){
-                Slot slot = new Slot(i, j, 0, 0);
+                Slot slot = new Slot(i, j, -2000, -2000);
                 if(slot.getStack().isEmpty()){
                     emptySlots.add(slot);
                 }else{
-                    itemSlots.add(slot);
+                    invSlots.add(slot);
                 }
             }
         }
+        invSlots.addAll(emptySlots);
     }
 
     public void addBlocks(ArrayList<TileEntity> blocks) {
