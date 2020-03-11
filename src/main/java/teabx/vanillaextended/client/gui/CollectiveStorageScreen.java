@@ -21,8 +21,8 @@ public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageCo
 
     public CollectiveStorageScreen(CollectiveStorageContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
-        this.xSize = 367;
-        this.ySize = 132;
+        this.xSize = 194;
+        this.ySize = 226;
         this.setSize(512,512);
     }
 
