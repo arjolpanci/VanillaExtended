@@ -1,6 +1,12 @@
 {
     "multipart": [
         {   "apply": { "model": "block/transport_pipe_base" }},
+		{   "when": { "up": "true" },
+            "apply": { "model": "block/transport_pipe_side", "uvlock": true }
+        },
+		{   "when": { "down": "true" },
+            "apply": { "model": "block/transport_pipe_side", "uvlock": true }
+        },
         {   "when": { "north": "true" },
             "apply": { "model": "block/transport_pipe_side", "uvlock": true }
         },
