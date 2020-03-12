@@ -16,6 +16,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.network.NetworkHooks;
+import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.tileentities.CSTile;
 import teabx.vanillaextended.tileentities.TPTile;
 
@@ -29,15 +30,26 @@ public class CollectiveStorage extends Block {
     }
 
     @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        CSTile tile = (CSTile) worldIn.getTileEntity(pos);
+        if(tile.getSb() == null){
+            tile.setSb(new StorageBlock(tile));
+            tile.getSb().add(tile);
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         CSTile tile = (CSTile) worldIn.getTileEntity(pos);
-        tile.setSb(new StorageBlock(tile));
-        ArrayList<TileEntity> connectedTiles = tile.getConnectedTiles();
-        for(int i=0; i<connectedTiles.size(); i++){
-            if(connectedTiles.get(i) instanceof TPTile){
-                ((TPTile) connectedTiles.get(i)).setSb(tile.getSb());
+        if(tile.getSb() == null) tile.setSb(new StorageBlock(tile));
+
+        for(TileEntity te : tile.getConnectedTiles()){
+            if(te instanceof IStorageBlockPart){
+                ((IStorageBlockPart) te).updateStorageBlock(tile.getSb());
             }
         }
+
         tile.getSb().update();
 
         if(!worldIn.isRemote){

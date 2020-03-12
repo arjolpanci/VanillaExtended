@@ -5,18 +5,17 @@ import net.minecraft.block.ChestBlock;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.tileentity.TileEntity;
+import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.tileentities.CSTile;
 import teabx.vanillaextended.tileentities.TPTile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.*;
 
-public class StorageBlock {
+public class StorageBlock implements Serializable {
 
-    private ArrayList<TileEntity> blocks;
-    private LinkedHashSet<Slot> invSlots;
+    private transient ArrayList<TileEntity> blocks;
+    private transient LinkedHashSet<Slot> invSlots;
 
     public StorageBlock(ArrayList<TileEntity> blocks) {
         this.blocks = blocks;
@@ -42,18 +41,14 @@ public class StorageBlock {
     }
 
     public ArrayList<IInventory> getInventories() {
-        ArrayList<IInventory> chests = new ArrayList<>();
-        for (TileEntity te : blocks) {
-            Block b = te.getBlockState().getBlock();
-            if(te instanceof IInventory){
-                if(b instanceof ChestBlock){
-                    chests.add(ChestBlock.getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
-                }else{
-                    chests.add((IInventory) te);
-                }
+        Set<IInventory> inventories = new HashSet<>();
+        for(TileEntity te : blocks){
+            if(te instanceof IStorageBlockPart){
+                inventories.addAll(((IStorageBlockPart) te).getConnectedInventories());
             }
         }
-        return chests;
+
+        return new ArrayList<>(inventories);
     }
 
     public int getInventorySize(){
@@ -70,9 +65,6 @@ public class StorageBlock {
     }
 
     public void update(){
-        for(TPTile tpt : getPipes()){
-            tpt.updateStorageBlock();
-        }
         Set<TileEntity> set = new HashSet<>(blocks);
         blocks.clear();
         blocks.addAll(set);
@@ -81,12 +73,14 @@ public class StorageBlock {
         invSlots.clear();
 
         for(IInventory i : getInventories()){
-            for(int j=0; j<i.getSizeInventory(); j++){
-                Slot slot = new Slot(i, j, -2000, -2000);
-                if(slot.getStack().isEmpty()){
-                    emptySlots.add(slot);
-                }else{
-                    invSlots.add(slot);
+            if(i != null){
+                for(int j=0; j<i.getSizeInventory(); j++){
+                    Slot slot = new Slot(i, j, -2000, -2000);
+                    if(slot.getStack().isEmpty()){
+                        emptySlots.add(slot);
+                    }else{
+                        invSlots.add(slot);
+                    }
                 }
             }
         }

@@ -1,14 +1,18 @@
 package teabx.vanillaextended.tileentities;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TPTile extends TileEntity implements IStorageBlockPart {
+public class TPTile extends TileEntity implements IStorageBlockPart, Serializable {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -22,10 +26,30 @@ public class TPTile extends TileEntity implements IStorageBlockPart {
         return connectedTiles;
     }
 
-    public void updateStorageBlock(){
+    @Override
+    public ArrayList<IInventory> getConnectedInventories(){
+        ArrayList<IInventory> inventories = new ArrayList<>();
         for(TileEntity te : getConnectedTiles()){
-            if(te instanceof TPTile){
-                ((TPTile) te).setSb(this.getSb());
+            Block b = te.getBlockState().getBlock();
+            if(te instanceof IInventory){
+                if(b instanceof ChestBlock){
+                    inventories.add(ChestBlock.getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
+                }else{
+                    inventories.add((IInventory) te);
+                }
+            }
+        }
+        return inventories;
+    }
+
+    @Override
+    public void updateStorageBlock(StorageBlock sb){
+        this.setSb(sb);
+        for(TileEntity te : getConnectedTiles()){
+            if(te instanceof IStorageBlockPart){
+                if(((IStorageBlockPart) te).getSb() != null) continue;
+                ((IStorageBlockPart) te).setSb(sb);
+                ((IStorageBlockPart) te).updateStorageBlock(sb);
             }
         }
     }
@@ -37,7 +61,7 @@ public class TPTile extends TileEntity implements IStorageBlockPart {
                 if(j==0) continue;
                 TileEntity tile = this.world.getTileEntity(getPosFromIndex(i, j));
                 if(tile != null){
-                    if(tile instanceof TPTile || tile instanceof CSTile || tile instanceof IInventory){
+                    if(tile instanceof IStorageBlockPart || tile instanceof IInventory){
                         connectedTiles.add(tile);
                     }
                 }
@@ -64,11 +88,7 @@ public class TPTile extends TileEntity implements IStorageBlockPart {
     @Override
     public void setSb(StorageBlock sb) {
         sb.add(this);
-        sb.addBlocks(getConnectedTiles());
-        this.sb = sb;
-    }
-
-    public void replaceSb(StorageBlock sb){
+        //sb.addBlocks(getConnectedTiles());
         this.sb = sb;
     }
 

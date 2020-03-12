@@ -1,10 +1,13 @@
 package teabx.vanillaextended.tileentities;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -15,9 +18,10 @@ import teabx.vanillaextended.blocks.StorageBlock;
 import teabx.vanillaextended.container.CollectiveStorageContainer;
 
 import javax.annotation.Nullable;
+import java.io.*;
 import java.util.ArrayList;
 
-public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider {
+public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider, Serializable {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -31,6 +35,60 @@ public class CSTile extends TileEntity implements IStorageBlockPart, INamedConta
         return connectedTiles;
     }
 
+    @Override
+    public void read(CompoundNBT compound) {
+        super.read(compound);
+        byte[] data = compound.getByteArray("StorageBlock");
+        try {
+            ByteArrayInputStream bis = new ByteArrayInputStream(data);
+            ObjectInputStream ois = new ObjectInputStream(bis);
+            this.sb = (StorageBlock) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public CompoundNBT write(CompoundNBT compound) {
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(sb);
+            oos.flush();
+            byte[] data = bos.toByteArray();
+            compound.putByteArray("StorageBlock", data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return super.write(compound);
+    }
+
+    @Override
+    public ArrayList<IInventory> getConnectedInventories() {
+        ArrayList<IInventory> inventories = new ArrayList<>();
+        for(TileEntity te : getConnectedTiles()){
+            Block b = te.getBlockState().getBlock();
+            if(te instanceof IInventory){
+                if(b instanceof ChestBlock){
+                    inventories.add(ChestBlock.getInventory(te.getBlockState(), te.getWorld(), te.getPos(), false));
+                }else{
+                    inventories.add((IInventory) te);
+                }
+            }
+        }
+        return inventories;
+    }
+
+    @Override
+    public void updateStorageBlock(StorageBlock sb) {
+        for(TileEntity te : getConnectedTiles()){
+            if(te instanceof IStorageBlockPart){
+                if(((IStorageBlockPart) te).getSb() != null) continue;
+                ((IStorageBlockPart) te).setSb(sb);
+                ((IStorageBlockPart) te).updateStorageBlock(sb);
+            }
+        }
+    }
     public void update(){
         connectedTiles.clear();
         for(int i=0; i<3; i++){
@@ -38,7 +96,7 @@ public class CSTile extends TileEntity implements IStorageBlockPart, INamedConta
                 if(j==0) continue;
                 TileEntity tile = this.world.getTileEntity(getPosFromIndex(i, j));
                 if(tile != null){
-                    if(tile instanceof TPTile || tile instanceof CSTile || tile instanceof IInventory){
+                    if(tile instanceof IStorageBlockPart || tile instanceof IInventory){
                         connectedTiles.add(tile);
                     }
                 }
