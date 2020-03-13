@@ -35,13 +35,11 @@ public class TransportPipe extends Block{
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
-
-    public static final AxisAlignedBB bounds = new AxisAlignedBB(5,5,5, 11,11,11);
     public static VoxelShape shape;
 
     public TransportPipe(Properties properties) {
         super(properties);
-        shape = VoxelShapes.create(bounds);
+        shape = Block.makeCuboidShape(5,5,5,11,11,11);
         this.setDefaultState(this.stateContainer.getBaseState().with(UP, Boolean.valueOf(false)).with(DOWN, Boolean.valueOf(false))
         .with(NORTH, Boolean.valueOf(false)).with(EAST, Boolean.valueOf(false)).with(SOUTH, Boolean.valueOf(false)).with(WEST, Boolean.valueOf(false)));
     }
