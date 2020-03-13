@@ -9,7 +9,11 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
@@ -27,42 +31,50 @@ public class TransportPipe extends Block{
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
+    private static final AxisAlignedBB bounds = new AxisAlignedBB(5,5,5, 11,11,11);
+    private final VoxelShape shape;
 
     public TransportPipe(Properties properties) {
         super(properties);
-        this.setDefaultState(this.stateContainer.getBaseState().with(UP, false).with(DOWN, false)
-        .with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false));
+        shape = VoxelShapes.create(bounds);
+        this.setDefaultState(this.stateContainer.getBaseState().with(UP, Boolean.valueOf(false)).with(DOWN, Boolean.valueOf(false))
+        .with(NORTH, Boolean.valueOf(false)).with(EAST, Boolean.valueOf(false)).with(SOUTH, Boolean.valueOf(false)).with(WEST, Boolean.valueOf(false)));
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return shape;
+    }
+
+    @Override
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return shape;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return shape;
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(BlockStateProperties.UP);
-        builder.add(BlockStateProperties.DOWN);
-        builder.add(BlockStateProperties.NORTH);
-        builder.add(BlockStateProperties.EAST);
-        builder.add(BlockStateProperties.SOUTH);
-        builder.add(BlockStateProperties.WEST);
-        super.fillStateContainer(builder);
+        builder.add(UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        World world = context.getWorld();
+        IBlockReader ibr = context.getWorld();
         BlockPos pos = context.getPos();
-        BlockPos up = pos.up();
-        BlockPos down = pos.down();
-        BlockPos north = pos.north();
-        BlockPos east = pos.east();
-        BlockPos south = pos.south();
-        BlockPos west = pos.west();
-        return super.getStateForPlacement(context).with(UP, getConnectedState(world, up)).with(DOWN, getConnectedState(world, down))
-                .with(NORTH, getConnectedState(world, north)).with(EAST, getConnectedState(world, east))
-                .with(SOUTH, getConnectedState(world, south)).with(WEST, getConnectedState(world, west));
-    }
-
-    private boolean getConnectedState(World world, BlockPos pos){
-        return (world.getBlockState(pos).getBlock() instanceof TransportPipe) ? true : false;
+        BlockState up = ibr.getBlockState(pos.up());
+        BlockState down = ibr.getBlockState(pos.down());
+        BlockState north = ibr.getBlockState(pos.north());
+        BlockState east = ibr.getBlockState(pos.east());
+        BlockState south = ibr.getBlockState(pos.south());
+        BlockState west = ibr.getBlockState(pos.west());
+        return super.getStateForPlacement(context).with(UP, Boolean.valueOf(getConnectedState(up))).with(DOWN, Boolean.valueOf(getConnectedState(down)))
+                .with(NORTH, Boolean.valueOf(getConnectedState(north))).with(EAST, Boolean.valueOf(getConnectedState(east)))
+                .with(SOUTH, Boolean.valueOf(getConnectedState(south))).with(WEST, Boolean.valueOf(getConnectedState(west)));
     }
 
     @Override
@@ -77,6 +89,10 @@ public class TransportPipe extends Block{
                 }
             }
         }
+    }
+
+    private boolean getConnectedState(BlockState state){
+        return (state.getBlock() instanceof TransportPipe) ? true : false;
     }
 
     @Override
