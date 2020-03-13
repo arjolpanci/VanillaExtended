@@ -3,6 +3,7 @@ package teabx.vanillaextended.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -34,8 +35,8 @@ public class TransportPipe extends Block{
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    private static final AxisAlignedBB bounds = new AxisAlignedBB(5,5,5, 11,11,11);
-    private final VoxelShape shape;
+    public static final AxisAlignedBB bounds = new AxisAlignedBB(5,5,5, 11,11,11);
+    public static VoxelShape shape;
 
     public TransportPipe(Properties properties) {
         super(properties);
@@ -44,19 +45,19 @@ public class TransportPipe extends Block{
         .with(NORTH, Boolean.valueOf(false)).with(EAST, Boolean.valueOf(false)).with(SOUTH, Boolean.valueOf(false)).with(WEST, Boolean.valueOf(false)));
     }
 
-    //public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    //    return shape;
-    //}
+    /*public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return shape;
+    }
 
-    //@Override
-    //public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-    //    return shape;
-    //}
+    @Override
+    public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return shape;
+    }
 
-    //@Override
-    //public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-    //    return shape;
-    //}
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return shape;
+    }*/
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -107,7 +108,8 @@ public class TransportPipe extends Block{
     }
 
     private boolean getConnectedState(BlockState state){
-        return (state.getBlock() instanceof TransportPipe) ? true : false;
+
+        return (state.getBlock() instanceof IStorageBlockPart || state.getBlock() instanceof IInventory) ? true : false;
     }
 
     @Override

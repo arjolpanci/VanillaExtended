@@ -2,10 +2,10 @@
     "multipart": [
         {   "apply": { "model": "vanillaextended:block/transport_pipe_base" }},
 		{   "when": { "up": "true" },
-            "apply": { "model": "vanillaextended:block/transport_pipe_side", "uvlock": true }
+            "apply": { "model": "vanillaextended:block/transport_pipe_pole", "uvlock": true }
         },
 		{   "when": { "down": "true" },
-            "apply": { "model": "vanillaextended:block/transport_pipe_side", "uvlock": true }
+            "apply": { "model": "vanillaextended:block/transport_pipe_pole", "x": 180, "uvlock": true }
         },
         {   "when": { "north": "true" },
             "apply": { "model": "vanillaextended:block/transport_pipe_side", "uvlock": true }
