@@ -12,7 +12,7 @@ import teabx.vanillaextended.blocks.StorageBlock;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TPTile extends TileEntity implements IStorageBlockPart, Serializable {
+public class TPTile extends TileEntity implements IStorageBlockPart {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -88,7 +88,6 @@ public class TPTile extends TileEntity implements IStorageBlockPart, Serializabl
     @Override
     public void setSb(StorageBlock sb) {
         sb.add(this);
-        //sb.addBlocks(getConnectedTiles());
         this.sb = sb;
     }
 

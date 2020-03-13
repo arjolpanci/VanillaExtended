@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.ArrayList;
 
-public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider, Serializable {
+public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
@@ -35,7 +35,7 @@ public class CSTile extends TileEntity implements IStorageBlockPart, INamedConta
         return connectedTiles;
     }
 
-    @Override
+    /*@Override
     public void read(CompoundNBT compound) {
         super.read(compound);
         byte[] data = compound.getByteArray("StorageBlock");
@@ -61,7 +61,7 @@ public class CSTile extends TileEntity implements IStorageBlockPart, INamedConta
             e.printStackTrace();
         }
         return super.write(compound);
-    }
+    }*/
 
     @Override
     public ArrayList<IInventory> getConnectedInventories() {

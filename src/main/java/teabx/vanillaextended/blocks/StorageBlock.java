@@ -14,8 +14,8 @@ import java.util.*;
 
 public class StorageBlock implements Serializable {
 
-    private transient ArrayList<TileEntity> blocks;
-    private transient LinkedHashSet<Slot> invSlots;
+    private ArrayList<TileEntity> blocks;
+    private LinkedHashSet<Slot> invSlots;
 
     public StorageBlock(ArrayList<TileEntity> blocks) {
         this.blocks = blocks;

@@ -40,7 +40,7 @@ public class CollectiveStorageContainer extends Container {
 
         for(int i=0; i<6; i++){
             for(int j=0; j<9; j++){
-                if(cnt > inventorySlots.size()) return;
+                if(cnt >= inventorySlots.size()) return;
                 Slot slot = inventorySlots.get(cnt++);
                 slot.xPos = 9 + j * 18;
                 slot.yPos = 18 + i * 18;
@@ -60,7 +60,7 @@ public class CollectiveStorageContainer extends Container {
 
         for(int i=0; i<6; i++){
             for(int j=0; j<9; j++){
-                if(startingIndex > inventorySlots.size()) return;
+                if(startingIndex >= inventorySlots.size()) return;
                 Slot slot = inventorySlots.get(startingIndex++);
                 slot.xPos = 9 + j * 18;
                 slot.yPos = 18 + i * 18;
