@@ -9,16 +9,15 @@ import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TPTile extends TileEntity implements IStorageBlockPart {
+public class StorageConnectorTile extends TileEntity implements IStorageBlockPart {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
 
-    public TPTile() {
-        super(BlockList.TPTileType);
+    public StorageConnectorTile() {
+        super(BlockList.storageConnectorTileType);
     }
 
     public ArrayList<TileEntity> getConnectedTiles(){

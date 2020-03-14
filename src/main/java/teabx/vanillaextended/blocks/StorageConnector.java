@@ -11,23 +11,19 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
-import teabx.vanillaextended.tileentities.TPTile;
+import teabx.vanillaextended.tileentities.StorageConnectorTile;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 
-public class TransportPipe extends Block{
+public class StorageConnector extends Block{
 
     public static final BooleanProperty UP = BlockStateProperties.UP;
     public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
@@ -37,7 +33,7 @@ public class TransportPipe extends Block{
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
     public static VoxelShape shape;
 
-    public TransportPipe(Properties properties) {
+    public StorageConnector(Properties properties) {
         super(properties);
         shape = Block.makeCuboidShape(5,5,5,11,11,11);
         this.setDefaultState(this.stateContainer.getBaseState().with(UP, Boolean.valueOf(false)).with(DOWN, Boolean.valueOf(false))
@@ -100,7 +96,7 @@ public class TransportPipe extends Block{
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        TPTile tile = (TPTile) worldIn.getTileEntity(pos);
+        StorageConnectorTile tile = (StorageConnectorTile) worldIn.getTileEntity(pos);
         if(tile != null){
             for(TileEntity te : tile.getConnectedTiles()){
                 if(te instanceof IStorageBlockPart){
@@ -124,6 +120,6 @@ public class TransportPipe extends Block{
     @Nullable
     @Override
     public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-        return new TPTile();
+        return new StorageConnectorTile();
     }
 }

@@ -9,18 +9,18 @@ import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import teabx.vanillaextended.blocks.BlockList;
-import teabx.vanillaextended.tileentities.CSTile;
+import teabx.vanillaextended.tileentities.StorageControllerTile;
 
 import java.util.ArrayList;
 
-public class CollectiveStorageContainer extends Container {
+public class StorageControllerContainer extends Container {
 
-    public CSTile tile;
+    public StorageControllerTile tile;
     private ArrayList<Slot> invSlots;
 
-    public CollectiveStorageContainer(int id, World world, BlockPos pos, PlayerInventory playerInventory) {
-        super(BlockList.CSContainerType, id);
-        this.tile = (CSTile) world.getTileEntity(pos);
+    public StorageControllerContainer(int id, World world, BlockPos pos, PlayerInventory playerInventory) {
+        super(BlockList.storageControllerContainerType, id);
+        this.tile = (StorageControllerTile) world.getTileEntity(pos);
 
         for(int i=0; i<3; i++){
             for(int j=0; j<9; j++){
@@ -75,7 +75,7 @@ public class CollectiveStorageContainer extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return isWithinUsableDistance(IWorldPosCallable.of(tile.getWorld(), tile.getPos()), playerIn, BlockList.collectiveStorage);
+        return isWithinUsableDistance(IWorldPosCallable.of(tile.getWorld(), tile.getPos()), playerIn, BlockList.storageController);
     }
 
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {

@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -15,19 +14,18 @@ import net.minecraft.util.text.StringTextComponent;
 import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
 import teabx.vanillaextended.blocks.StorageBlock;
-import teabx.vanillaextended.container.CollectiveStorageContainer;
+import teabx.vanillaextended.container.StorageControllerContainer;
 
 import javax.annotation.Nullable;
-import java.io.*;
 import java.util.ArrayList;
 
-public class CSTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider {
+public class StorageControllerTile extends TileEntity implements IStorageBlockPart, INamedContainerProvider {
 
     private ArrayList<TileEntity> connectedTiles = new ArrayList<>();
     private StorageBlock sb;
 
-    public CSTile() {
-        super(BlockList.CSTileType);
+    public StorageControllerTile() {
+        super(BlockList.storageControllerTileType);
     }
 
     public ArrayList<TileEntity> getConnectedTiles(){
@@ -139,6 +137,6 @@ public class CSTile extends TileEntity implements IStorageBlockPart, INamedConta
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new CollectiveStorageContainer(id, world, pos, playerInventory);
+        return new StorageControllerContainer(id, world, pos, playerInventory);
     }
 }

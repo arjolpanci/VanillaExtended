@@ -16,29 +16,25 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import teabx.vanillaextended.blocks.BlockList;
-import teabx.vanillaextended.blocks.TransportPipe;
+import teabx.vanillaextended.blocks.StorageConnector;
 import teabx.vanillaextended.client.gui.CollectiveStorageScreen;
-import teabx.vanillaextended.container.CollectiveStorageContainer;
-import teabx.vanillaextended.tileentities.CSTile;
-import teabx.vanillaextended.blocks.CollectiveStorage;
+import teabx.vanillaextended.container.StorageControllerContainer;
+import teabx.vanillaextended.tileentities.StorageControllerTile;
+import teabx.vanillaextended.blocks.StorageController;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
 import teabx.vanillaextended.client.renders.RenderRegistry;
 import teabx.vanillaextended.entities.EntityRegistry;
 import teabx.vanillaextended.items.ItemList;
 import teabx.vanillaextended.items.KingBow;
 import teabx.vanillaextended.items.LordStaff;
-import teabx.vanillaextended.tileentities.TPTile;
+import teabx.vanillaextended.tileentities.StorageConnectorTile;
 import teabx.vanillaextended.tools.ToolList;
 import teabx.vanillaextended.tools.ToolMaterial;
 
@@ -66,7 +62,7 @@ public class VanillaExtended
         DispenserBlock.registerDispenseBehavior(Items.WHEAT_SEEDS, new SeedBehaviour());
         DispenserBlock.registerDispenseBehavior(Items.BEETROOT_SEEDS, new BeetRootBehavior());
         CapabilityRegistry.registerCapabilities();
-        ScreenManager.registerFactory(BlockList.CSContainerType, CollectiveStorageScreen::new);
+        ScreenManager.registerFactory(BlockList.storageControllerContainerType, CollectiveStorageScreen::new);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -80,8 +76,8 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             event.getRegistry().registerAll(
-                    BlockList.collectiveStorage = new CollectiveStorage(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).harvestLevel(2)).setRegistryName(rloc("collective_storage")),
-                    BlockList.transportPipe = new TransportPipe(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName(rloc("transport_pipe"))
+                    BlockList.storageController = new StorageController(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).harvestLevel(2)).setRegistryName(rloc("storage_controller")),
+                    BlockList.storageConnector = new StorageConnector(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName(rloc("storage_connector"))
             );
         }
 
@@ -98,18 +94,18 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().registerAll(
-                    BlockList.CSContainerType = (ContainerType<CollectiveStorageContainer>) IForgeContainerType.create((windowId, inv, data) -> {
+                    BlockList.storageControllerContainerType = (ContainerType<StorageControllerContainer>) IForgeContainerType.create((windowId, inv, data) -> {
                         BlockPos pos = data.readBlockPos();
-                        return new CollectiveStorageContainer(windowId, Minecraft.getInstance().world, pos, inv);
-                    }).setRegistryName(rloc("collective_storage"))
+                        return new StorageControllerContainer(windowId, Minecraft.getInstance().world, pos, inv);
+                    }).setRegistryName(rloc("storage_controller"))
             );
         }
 
         @SubscribeEvent
         public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
             event.getRegistry().registerAll(
-                    BlockList.CSTileType = TileEntityType.Builder.create(CSTile::new, BlockList.collectiveStorage).build(null).setRegistryName(rloc("collective_storage")),
-                    BlockList.TPTileType = TileEntityType.Builder.create(TPTile::new, BlockList.transportPipe).build(null).setRegistryName(rloc("transport_pipe"))
+                    BlockList.storageControllerTileType = TileEntityType.Builder.create(StorageControllerTile::new, BlockList.storageController).build(null).setRegistryName(rloc("storage_controller")),
+                    BlockList.storageConnectorTileType = TileEntityType.Builder.create(StorageConnectorTile::new, BlockList.storageConnector).build(null).setRegistryName(rloc("storage_connector"))
             );
         }
 
@@ -124,8 +120,8 @@ public class VanillaExtended
                     ToolList.flint_sword = new SwordItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_sword")),
                     ItemList.king_bow = new KingBow(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("king_bow")),
                     ItemList.lord_staff = new LordStaff(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("zombie_lord_staff")),
-                    ItemList.collective_storage = new BlockItem(BlockList.collectiveStorage, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.collectiveStorage.getRegistryName()),
-                    ItemList.transport_pipe = new BlockItem(BlockList.transportPipe, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.transportPipe.getRegistryName())
+                    ItemList.collective_storage = new BlockItem(BlockList.storageController, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageController.getRegistryName()),
+                    ItemList.transport_pipe = new BlockItem(BlockList.storageConnector, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageConnector.getRegistryName())
             );
 
             EntityRegistry.registerSpawnEggs(event);

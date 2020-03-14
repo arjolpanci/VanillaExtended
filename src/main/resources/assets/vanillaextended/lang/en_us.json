@@ -8,10 +8,10 @@
   "item.vanillaextended.lost_miner_egg": "Lost Miner Egg",
   "item.vanillaextended.king_bow": "Skeleton King Bow",
   "item.vanillaextended.zombie_lord_staff": "Zombie Lord Staff",
-  "item.vanillaextended.collective_storage": "Collective Storage",
-  "item.vanillaextended.transport_pipe": "Transport Pipe",
-  "block.vanillaextended.collective_storage": "Collective Storage",
-  "block.vanillaextended.transport_pipe": "Transport Pipe",
+  "item.vanillaextended.storage_controller": "Storage Controller",
+  "item.vanillaextended.storage_connector": "Storage Connector",
+  "block.vanillaextended.storage_controller": "Storage Controller",
+  "block.vanillaextended.storage_connector": "Storage Connector",
   "entity.vanillaextended.lost_miner": "Lost Miner",
   "entity.vanillaextended.skeleton_king": "Skeleton King"
 }

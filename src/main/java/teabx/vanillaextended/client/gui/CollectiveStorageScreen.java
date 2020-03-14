@@ -5,21 +5,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import teabx.vanillaextended.container.CollectiveStorageContainer;
+import teabx.vanillaextended.container.StorageControllerContainer;
 import teabx.vanillaextended.main.VanillaExtended;
 
-public class CollectiveStorageScreen extends ContainerScreen<CollectiveStorageContainer> {
+public class CollectiveStorageScreen extends ContainerScreen<StorageControllerContainer> {
 
     private static final ResourceLocation COLLECTIVE_STORAGE_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/csgui.png");
     private static final ResourceLocation SCROLLBAR_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/scrollbar.png");
     private boolean isScrolling = false;
     private double currentScroll;
 
-    public CollectiveStorageScreen(CollectiveStorageContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public CollectiveStorageScreen(StorageControllerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.xSize = 194;
         this.ySize = 226;

@@ -1,13 +1,11 @@
 package teabx.vanillaextended.blocks;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.ChestBlock;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.tileentity.TileEntity;
 import teabx.vanillaextended.blocks.interfaces.IStorageBlockPart;
-import teabx.vanillaextended.tileentities.CSTile;
-import teabx.vanillaextended.tileentities.TPTile;
+import teabx.vanillaextended.tileentities.StorageConnectorTile;
+import teabx.vanillaextended.tileentities.StorageControllerTile;
 
 import java.io.Serializable;
 import java.util.*;
@@ -22,7 +20,7 @@ public class StorageBlock implements Serializable {
         invSlots = new LinkedHashSet<>();
     }
 
-    public StorageBlock(CSTile master){
+    public StorageBlock(StorageControllerTile master){
         blocks = new ArrayList<>();
         blocks.add(master);
         invSlots = new LinkedHashSet<>();
@@ -32,10 +30,10 @@ public class StorageBlock implements Serializable {
         blocks.add(te);
     }
 
-    public ArrayList<TPTile> getPipes() {
-        ArrayList<TPTile> pipes = new ArrayList<>();
+    public ArrayList<StorageConnectorTile> getPipes() {
+        ArrayList<StorageConnectorTile> pipes = new ArrayList<>();
         for (TileEntity te : blocks) {
-            if (te instanceof TPTile) pipes.add((TPTile) te);
+            if (te instanceof StorageConnectorTile) pipes.add((StorageConnectorTile) te);
         }
         return pipes;
     }
