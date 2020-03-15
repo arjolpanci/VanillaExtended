@@ -115,6 +115,10 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
         return offerList;
     }
 
+    public void setOfferList(ArrayList<AssassinOffer> offerList) {
+        this.offerList = offerList;
+    }
+
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {

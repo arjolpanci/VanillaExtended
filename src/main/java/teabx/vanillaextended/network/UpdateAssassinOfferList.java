@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 public class UpdateAssassinOfferList {
 
     private ArrayList<AssassinOffer> offerList;
+    private WanderingAssassin wanderingAssassin;
 
     public UpdateAssassinOfferList(PacketBuffer packetBuffer){
         byte[] data = packetBuffer.readByteArray();
@@ -30,6 +31,7 @@ public class UpdateAssassinOfferList {
 
     public UpdateAssassinOfferList(WanderingAssassin wanderingAssassin) {
         this.offerList = wanderingAssassin.getOfferList();
+        this.wanderingAssassin = wanderingAssassin;
     }
 
     void encode(PacketBuffer packetBuffer) {
@@ -48,10 +50,7 @@ public class UpdateAssassinOfferList {
 
     static void handle(final UpdateAssassinOfferList uao, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-           if(context.get().getSender().openContainer instanceof WanderingAssassinContainer){
-               WanderingAssassinContainer was = (WanderingAssassinContainer) context.get().getSender().openContainer;
-               was.offerList = uao.offerList;
-           }
+            uao.wanderingAssassin.setOfferList(uao.offerList);
         });
     }
 
