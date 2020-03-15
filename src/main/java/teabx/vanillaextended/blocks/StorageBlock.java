@@ -53,6 +53,16 @@ public class StorageBlock implements Serializable {
         return (invSlots.size())/9;
     }
 
+    public int getFreeSlots() {
+        update();
+        int space = 0;
+        for(Slot s : invSlots){
+            if(s.getStack().isEmpty()) space++;
+        }
+        return space;
+    }
+
+
     public LinkedHashSet<Slot> getInvSlots(){
         update();
         return invSlots;

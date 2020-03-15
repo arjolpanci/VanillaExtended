@@ -1,6 +1,5 @@
 package teabx.vanillaextended.entities;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -9,7 +8,6 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import teabx.vanillaextended.main.VanillaExtended;
@@ -24,10 +22,13 @@ public class EntityRegistry {
             .build("skeleton_king").setRegistryName(VanillaExtended.rloc("skeleton_king"));
     public static EntityType<ZombieEntity> STAFF_ZOMBIE = (EntityType<ZombieEntity>) EntityType.Builder.create(StaffZombie::new, EntityClassification.MONSTER)
             .build("staff_zombie").setRegistryName(VanillaExtended.rloc("staff_zombie"));
+    public static EntityType<?> WANDERING_ASSASSIN = EntityType.Builder.create(WanderingAssassin::new, EntityClassification.CREATURE)
+            .build("wandering_assassin").setRegistryName(VanillaExtended.rloc("wandering_assassin"));
 
     //Item Eggs
     public static Item lost_miner_egg;
     public static Item skeleton_king_egg;
+    public static Item wandering_assassin_egg;
 
     public static void registerEntitySpawn(){
         getEntitySpawn(LOST_MINER, EntityClassification.MONSTER);
@@ -53,7 +54,8 @@ public class EntityRegistry {
     public static void registerSpawnEggs(final RegistryEvent.Register<Item> e){
         e.getRegistry().registerAll(
                 lost_miner_egg = generateSpawnEgg(LOST_MINER, 0x3273a8, 0xf7f411, "lost_miner_egg"),
-                skeleton_king_egg = generateSpawnEgg(SKELETON_KING, 0x3273a8, 0xf7f411, "skeleton_king_egg")
+                skeleton_king_egg = generateSpawnEgg(SKELETON_KING, 0x3273a8, 0xf7f411, "skeleton_king_egg"),
+                wandering_assassin_egg = generateSpawnEgg(WANDERING_ASSASSIN, 0x3273a8, 0xf7f411, "wandering_assassin_egg")
         );
     }
 

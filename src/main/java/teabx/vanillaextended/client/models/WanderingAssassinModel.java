@@ -1,16 +1,10 @@
 package teabx.vanillaextended.client.models;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.entity.model.SkeletonModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.HandSide;
-import net.minecraft.util.math.MathHelper;
-import teabx.vanillaextended.entities.SkeletonKing;
+import teabx.vanillaextended.entities.WanderingAssassin;
 
-public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHasArm {
+public class WanderingAssassinModel extends EntityModel<WanderingAssassin> {
 
     public RendererModel right_arm;
     public RendererModel right_leg;
@@ -26,7 +20,7 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
     public RendererModel crown_jewel_r;
     public RendererModel crown_jewel_l;
 
-    public SkeletonKingModel() {
+    public WanderingAssassinModel(){
         this.textureWidth = 64;
         this.textureHeight = 32;
 
@@ -82,7 +76,7 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
     }
 
     @Override
-    public void render(SkeletonKing entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(WanderingAssassin entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.torso.render(scale *1.5F);
         this.crown_rear.render(scale *1.5F);
         this.left_leg.render(scale *1.5F);
@@ -98,54 +92,10 @@ public class SkeletonKingModel extends EntityModel<SkeletonKing> implements IHas
         this.right_leg.render(scale *1.5F);
     }
 
-    /**
-     * This is a helper function from Tabula to set the rotation of model parts
-     */
     public void setRotateAngle(RendererModel RendererModel, float x, float y, float z) {
         RendererModel.rotateAngleX = x;
         RendererModel.rotateAngleY = y;
         RendererModel.rotateAngleZ = z;
     }
 
-    @Override
-    public void postRenderArm(float scale, HandSide side) {
-        float f = side == HandSide.RIGHT ? 0.5F : -0.5F;
-        RendererModel renderermodel = this.right_arm;
-        renderermodel.rotationPointX += f-0.1F;
-        renderermodel.rotationPointZ -= 2.2F*f;
-        renderermodel.rotationPointY += f - 0.5F;
-        renderermodel.postRender(scale * 1.5F);
-        renderermodel.rotationPointX -= f-0.1F;
-        renderermodel.rotationPointZ += 2.2F*f;
-        renderermodel.rotationPointY -= f - 0.5F;
-    }
-
-    @Override
-    public void setRotationAngles(SkeletonKing entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-
-        this.right_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / 1.0F;
-        this.left_leg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount / 1.0F;
-        this.right_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 0.6F * limbSwingAmount / 1.0F;
-        this.left_arm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 0.5F * limbSwingAmount / 1.0F;
-
-        if(entityIn.isAggressive()){
-            float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
-            float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
-            this.right_arm.rotateAngleZ = 0F;
-            this.left_arm.rotateAngleZ = 0F;
-            this.right_arm.rotateAngleY = -(0.3F - f * 0.6F);
-            this.left_arm.rotateAngleY = 0.3F - f * 0.6F;
-            this.right_arm.rotateAngleX = (-(float)Math.PI / 2F);
-            this.left_arm.rotateAngleX = (-(float)Math.PI / 2F);
-            this.right_arm.rotateAngleX -= f * 1.2F - f1 * 0.4F;
-            this.left_arm.rotateAngleX -= f * 1.2F - f1 * 0.4F;
-            this.right_arm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.left_arm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.right_arm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-            this.left_arm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-
-        }
-
-    }
 }

@@ -25,7 +25,10 @@ import org.apache.logging.log4j.Logger;
 import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.StorageConnector;
 import teabx.vanillaextended.client.gui.CollectiveStorageScreen;
+import teabx.vanillaextended.client.gui.WanderingAssassinScreen;
+import teabx.vanillaextended.container.ContainerTypes;
 import teabx.vanillaextended.container.StorageControllerContainer;
+import teabx.vanillaextended.container.WanderingAssassinContainer;
 import teabx.vanillaextended.tileentities.StorageControllerTile;
 import teabx.vanillaextended.blocks.StorageController;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
@@ -62,7 +65,8 @@ public class VanillaExtended
         DispenserBlock.registerDispenseBehavior(Items.WHEAT_SEEDS, new SeedBehaviour());
         DispenserBlock.registerDispenseBehavior(Items.BEETROOT_SEEDS, new BeetRootBehavior());
         CapabilityRegistry.registerCapabilities();
-        ScreenManager.registerFactory(BlockList.storageControllerContainerType, CollectiveStorageScreen::new);
+        ScreenManager.registerFactory(ContainerTypes.storageControllerContainerType, CollectiveStorageScreen::new);
+        ScreenManager.registerFactory(ContainerTypes.wanderingAssassinContainerType, WanderingAssassinScreen::new);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
@@ -86,7 +90,8 @@ public class VanillaExtended
             event.getRegistry().registerAll(
                     EntityRegistry.LOST_MINER,
                     EntityRegistry.SKELETON_KING,
-                    EntityRegistry.STAFF_ZOMBIE
+                    EntityRegistry.STAFF_ZOMBIE,
+                    EntityRegistry.WANDERING_ASSASSIN
             );
         }
 
@@ -94,10 +99,13 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
             event.getRegistry().registerAll(
-                    BlockList.storageControllerContainerType = (ContainerType<StorageControllerContainer>) IForgeContainerType.create((windowId, inv, data) -> {
+                    ContainerTypes.storageControllerContainerType = (ContainerType<StorageControllerContainer>) IForgeContainerType.create((windowId, inv, data) -> {
                         BlockPos pos = data.readBlockPos();
                         return new StorageControllerContainer(windowId, Minecraft.getInstance().world, pos, inv);
-                    }).setRegistryName(rloc("storage_controller"))
+                    }).setRegistryName(rloc("storage_controller")),
+                    ContainerTypes.wanderingAssassinContainerType = (ContainerType<WanderingAssassinContainer>) IForgeContainerType.create(((windowId, inv, data) -> {
+                        return new WanderingAssassinContainer(windowId, inv, Minecraft.getInstance().world);
+                    })).setRegistryName(rloc("wandering_assassin"))
             );
         }
 

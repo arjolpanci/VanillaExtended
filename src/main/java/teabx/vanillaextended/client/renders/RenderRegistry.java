@@ -5,6 +5,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import teabx.vanillaextended.entities.LostMiner;
 import teabx.vanillaextended.entities.SkeletonKing;
+import teabx.vanillaextended.entities.WanderingAssassin;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -13,6 +14,7 @@ public class RenderRegistry {
     public static void registerEntityRenders(){
         RenderingRegistry.registerEntityRenderingHandler(LostMiner.class, new LostMinerRenderer.RenderFactory());
         RenderingRegistry.registerEntityRenderingHandler(SkeletonKing.class, new SkeletonKingRenderer.RenderFactory());
+        RenderingRegistry.registerEntityRenderingHandler(WanderingAssassin.class, new WanderingAssassinRenderer.RenderFactory());
     }
 
 }

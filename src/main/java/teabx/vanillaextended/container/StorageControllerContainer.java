@@ -19,7 +19,7 @@ public class StorageControllerContainer extends Container {
     private ArrayList<Slot> invSlots;
 
     public StorageControllerContainer(int id, World world, BlockPos pos, PlayerInventory playerInventory) {
-        super(BlockList.storageControllerContainerType, id);
+        super(ContainerTypes.storageControllerContainerType, id);
         this.tile = (StorageControllerTile) world.getTileEntity(pos);
 
         for(int i=0; i<3; i++){

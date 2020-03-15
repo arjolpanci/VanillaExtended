@@ -84,6 +84,21 @@ public class CollectiveStorageScreen extends ContainerScreen<StorageControllerCo
         this.blit(i, j, 0, 0, this.xSize, this.ySize, 512, 512);
     }
 
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        int invSize = container.getInvSize()*9;
+        int freeSpace = container.tile.getSb().getFreeSlots();
+        this.font.drawString(freeSpace + "/" + invSize, 9.0F, 6.0F, 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, 129.0F, 4210752);
+    }
+
+    @Override
+    public void render(int p_render_1_, int p_render_2_, float p_render_3_) {
+        this.renderBackground();
+        super.render(p_render_1_, p_render_2_, p_render_3_);
+        this.renderHoveredToolTip(p_render_1_, p_render_2_);
+    }
+
     private int map(double pos){
         int map_max = (container.getInvSize()+1/9) - 6;
         double l = this.guiTop + 18;
