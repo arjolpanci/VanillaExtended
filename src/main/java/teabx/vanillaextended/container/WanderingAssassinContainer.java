@@ -6,8 +6,11 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 import teabx.vanillaextended.entities.AssassinOffer;
 import teabx.vanillaextended.entities.WanderingAssassin;
+import teabx.vanillaextended.network.PacketHandler;
+import teabx.vanillaextended.network.UpdateAssassinOfferList;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,7 @@ public class WanderingAssassinContainer extends Container {
     }
 
     public ArrayList<AssassinOffer> getOffers() {
+        //PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateAssassinOfferList(wanderingAssassin));
         return this.offerList;
     }
 

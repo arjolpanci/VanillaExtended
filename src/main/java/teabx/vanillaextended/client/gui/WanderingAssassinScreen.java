@@ -25,10 +25,10 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
         this.ySize = 166;
         this.setSize(512, 512);
 
-        for(int i=0; i<container.wanderingAssassin.getOfferList().size(); i++){
+        for(int i=0; i<container.getOffers().size(); i++){
             int finalI = i;
             Button button = new Button(guiLeft + 5, guiTop + 18 + (20*i), 88, 20, "", p_onPress_1_ -> {
-                this.currentOffer = container.wanderingAssassin.getOfferList().get(finalI);
+                this.currentOffer = container.getOffers().get(finalI);
             });
             buttons.add(button);
         }
@@ -40,9 +40,7 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
         super.render(p_render_1_, p_render_2_, p_render_3_);
         int cnt=0;
 
-        System.out.println(container.getOffers().size());
-
-        for(AssassinOffer ao : container.wanderingAssassin.getOfferList()){
+        for(AssassinOffer ao : container.getOffers()){
             ItemStack gold = new ItemStack(Items.GOLD_INGOT);
             gold.setCount(ao.getPrice());
             ItemStack item = ao.getItem();
@@ -50,6 +48,7 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
             this.itemRenderer.renderItemOverlayIntoGUI(this.font, gold, guiLeft + 5 + 22, guiTop + 18 + 4 + (cnt*20), (String)null);
             this.itemRenderer.renderItemAndEffectIntoGUI(item, guiLeft + 5 + 66, guiTop + 18 + 4 + (cnt*20));
             this.itemRenderer.renderItemOverlayIntoGUI(this.font, item, guiLeft + 5 + 66, guiTop + 18 + 4 + (cnt*20), (String)null);
+            cnt++;
         }
         this.renderHoveredToolTip(p_render_1_, p_render_2_);
     }

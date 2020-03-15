@@ -8,14 +8,7 @@ import teabx.vanillaextended.main.VanillaExtended;
 public class PacketHandler {
 
     public static int index = 1;
-
-    private static final String PROTOCOL_VERSION = "1";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(VanillaExtended.MODID, "main"),
-            () -> PROTOCOL_VERSION,
-            PROTOCOL_VERSION::equals,
-            PROTOCOL_VERSION::equals
-    );
+    public static SimpleChannel INSTANCE;
 
     public static void registerMessages(){
         INSTANCE.registerMessage(index++, UpdateAssassinOfferList.class, UpdateAssassinOfferList::encode, UpdateAssassinOfferList::new, UpdateAssassinOfferList::handle);

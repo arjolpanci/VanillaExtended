@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import teabx.vanillaextended.blocks.BlockList;
@@ -48,6 +49,7 @@ public class VanillaExtended
     private static final Logger LOGGER = LogManager.getLogger();
     public static final String MODID = "vanillaextended";
     public static VanillaExtended instance;
+    private static final String PROTOCOL_VERSION = "1";
 
     public static ResourceLocation rloc(String name){ return new ResourceLocation(MODID, name);};
 
@@ -68,6 +70,12 @@ public class VanillaExtended
         CapabilityRegistry.registerCapabilities();
         ScreenManager.registerFactory(ContainerTypes.storageControllerContainerType, StorageControllerScreen::new);
         ScreenManager.registerFactory(ContainerTypes.wanderingAssassinContainerType, WanderingAssassinScreen::new);
+        PacketHandler.INSTANCE = NetworkRegistry.newSimpleChannel(
+                new ResourceLocation(VanillaExtended.MODID, "main"),
+                () -> PROTOCOL_VERSION,
+                PROTOCOL_VERSION::equals,
+                PROTOCOL_VERSION::equals
+        );
         PacketHandler.registerMessages();
 
     }
