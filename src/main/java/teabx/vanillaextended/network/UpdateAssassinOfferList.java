@@ -1,5 +1,6 @@
 package teabx.vanillaextended.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import teabx.vanillaextended.container.WanderingAssassinContainer;
@@ -13,7 +14,6 @@ import java.util.function.Supplier;
 public class UpdateAssassinOfferList {
 
     private ArrayList<AssassinOffer> offerList;
-    private WanderingAssassin wanderingAssassin;
 
     public UpdateAssassinOfferList(PacketBuffer packetBuffer){
         byte[] data = packetBuffer.readByteArray();
@@ -31,7 +31,6 @@ public class UpdateAssassinOfferList {
 
     public UpdateAssassinOfferList(WanderingAssassin wanderingAssassin) {
         this.offerList = wanderingAssassin.getOfferList();
-        this.wanderingAssassin = wanderingAssassin;
     }
 
     void encode(PacketBuffer packetBuffer) {
@@ -50,7 +49,10 @@ public class UpdateAssassinOfferList {
 
     static void handle(final UpdateAssassinOfferList uao, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
-            uao.wanderingAssassin.setOfferList(uao.offerList);
+            if(Minecraft.getInstance().player.openContainer instanceof WanderingAssassinContainer){
+                WanderingAssassinContainer was = (WanderingAssassinContainer) Minecraft.getInstance().player.openContainer;
+                was.offerList = uao.offerList;
+            }
         });
     }
 
