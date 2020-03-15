@@ -18,7 +18,7 @@ public class PacketHandler {
     );
 
     public static void registerMessages(){
-
+        INSTANCE.registerMessage(index++, UpdateAssassinOfferList.class, UpdateAssassinOfferList::encode, UpdateAssassinOfferList::new, UpdateAssassinOfferList::handle);
     }
 
 }

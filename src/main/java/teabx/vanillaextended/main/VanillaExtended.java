@@ -29,6 +29,7 @@ import teabx.vanillaextended.client.gui.WanderingAssassinScreen;
 import teabx.vanillaextended.container.ContainerTypes;
 import teabx.vanillaextended.container.StorageControllerContainer;
 import teabx.vanillaextended.container.WanderingAssassinContainer;
+import teabx.vanillaextended.network.PacketHandler;
 import teabx.vanillaextended.tileentities.StorageControllerTile;
 import teabx.vanillaextended.blocks.StorageController;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
@@ -67,6 +68,8 @@ public class VanillaExtended
         CapabilityRegistry.registerCapabilities();
         ScreenManager.registerFactory(ContainerTypes.storageControllerContainerType, StorageControllerScreen::new);
         ScreenManager.registerFactory(ContainerTypes.wanderingAssassinContainerType, WanderingAssassinScreen::new);
+        PacketHandler.registerMessages();
+
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

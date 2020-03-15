@@ -6,16 +6,22 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import teabx.vanillaextended.entities.AssassinOffer;
 import teabx.vanillaextended.entities.WanderingAssassin;
+
+import java.util.ArrayList;
 
 
 public class WanderingAssassinContainer extends Container {
 
     public WanderingAssassin wanderingAssassin;
+    public ArrayList<AssassinOffer> offerList;
 
     public WanderingAssassinContainer(int id, PlayerInventory playerInventory, World world, BlockPos pos) {
         super(ContainerTypes.wanderingAssassinContainerType, id);
         this.wanderingAssassin = (WanderingAssassin) world.getEntityByID(pos.getX());
+        this.offerList = wanderingAssassin.getOfferList();
+
         for(int i=0; i<3; i++){
             for(int j=0; j<9; j++){
                 this.addSlot(new Slot(playerInventory, j+i*9+9, 108 + j*18, 84 + i*18));
@@ -27,6 +33,10 @@ public class WanderingAssassinContainer extends Container {
 
         this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 0, 145, 37));
         this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 1, 202, 37));
+    }
+
+    public ArrayList<AssassinOffer> getOffers() {
+        return this.offerList;
     }
 
     @Override
