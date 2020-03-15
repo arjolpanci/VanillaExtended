@@ -58,6 +58,7 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
     @Nullable
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-        return new WanderingAssassinContainer(id, playerInventory, (WanderingAssassin) world.getEntityByID(this.getEntityId()));
+        int entityId = this.getEntityId();
+        return new WanderingAssassinContainer(id, playerInventory, this.getEntityWorld(), new BlockPos(entityId,entityId,entityId));
     }
 }

@@ -24,7 +24,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import teabx.vanillaextended.blocks.BlockList;
 import teabx.vanillaextended.blocks.StorageConnector;
-import teabx.vanillaextended.client.gui.CollectiveStorageScreen;
+import teabx.vanillaextended.client.gui.StorageControllerScreen;
 import teabx.vanillaextended.client.gui.WanderingAssassinScreen;
 import teabx.vanillaextended.container.ContainerTypes;
 import teabx.vanillaextended.container.StorageControllerContainer;
@@ -65,7 +65,7 @@ public class VanillaExtended
         DispenserBlock.registerDispenseBehavior(Items.WHEAT_SEEDS, new SeedBehaviour());
         DispenserBlock.registerDispenseBehavior(Items.BEETROOT_SEEDS, new BeetRootBehavior());
         CapabilityRegistry.registerCapabilities();
-        ScreenManager.registerFactory(ContainerTypes.storageControllerContainerType, CollectiveStorageScreen::new);
+        ScreenManager.registerFactory(ContainerTypes.storageControllerContainerType, StorageControllerScreen::new);
         ScreenManager.registerFactory(ContainerTypes.wanderingAssassinContainerType, WanderingAssassinScreen::new);
     }
 
@@ -104,7 +104,8 @@ public class VanillaExtended
                         return new StorageControllerContainer(windowId, Minecraft.getInstance().world, pos, inv);
                     }).setRegistryName(rloc("storage_controller")),
                     ContainerTypes.wanderingAssassinContainerType = (ContainerType<WanderingAssassinContainer>) IForgeContainerType.create(((windowId, inv, data) -> {
-                        return new WanderingAssassinContainer(windowId, inv, Minecraft.getInstance().world);
+                        BlockPos pos = data.readBlockPos();
+                        return new WanderingAssassinContainer(windowId, inv, Minecraft.getInstance().world, pos);
                     })).setRegistryName(rloc("wandering_assassin"))
             );
         }

@@ -11,14 +11,14 @@ import net.minecraft.util.text.ITextComponent;
 import teabx.vanillaextended.container.StorageControllerContainer;
 import teabx.vanillaextended.main.VanillaExtended;
 
-public class CollectiveStorageScreen extends ContainerScreen<StorageControllerContainer> {
+public class StorageControllerScreen extends ContainerScreen<StorageControllerContainer> {
 
     private static final ResourceLocation COLLECTIVE_STORAGE_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/csgui.png");
     private static final ResourceLocation SCROLLBAR_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/scrollbar.png");
     private boolean isScrolling = false;
     private double currentScroll;
 
-    public CollectiveStorageScreen(StorageControllerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+    public StorageControllerScreen(StorageControllerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
         super(screenContainer, inv, titleIn);
         this.xSize = 194;
         this.ySize = 226;
