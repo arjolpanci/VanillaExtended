@@ -2,15 +2,16 @@ package teabx.vanillaextended.container;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
 import teabx.vanillaextended.entities.AssassinOffer;
 import teabx.vanillaextended.entities.WanderingAssassin;
 import teabx.vanillaextended.network.PacketHandler;
-import teabx.vanillaextended.network.UpdateAssassinOfferList;
+import teabx.vanillaextended.network.UpdateServerAssassinInventory;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,8 @@ public class WanderingAssassinContainer extends Container {
 
     public WanderingAssassin wanderingAssassin;
     public ArrayList<AssassinOffer> offerList;
+    public AssassinOffer currentOffer;
+    public boolean tradeConfirmed = false;
 
     public WanderingAssassinContainer(int id, PlayerInventory playerInventory, World world, BlockPos pos) {
         super(ContainerTypes.wanderingAssassinContainerType, id);
@@ -34,19 +37,39 @@ public class WanderingAssassinContainer extends Container {
             this.addSlot(new Slot(playerInventory, i, 108 + i*18, 142));
         }
 
-        this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 0, 145, 37));
-        this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 1, 202, 37));
-    }
-
-    public ArrayList<AssassinOffer> getOffers() {
-        //PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateAssassinOfferList(wanderingAssassin));
-        return this.offerList;
+        this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 0, 153, 41));
+        this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 1, 201, 41));
+        this.addSlot(new Slot(this.wanderingAssassin.getInventory(), 2, 112, 22));
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
         if(wanderingAssassin == null) return false;
         return this.wanderingAssassin.getCustomer() == playerIn;
+    }
+
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (index < 45) {
+                if (!this.mergeItemStack(itemstack1, 45, this.inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, 45, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+        }
+
+        return itemstack;
     }
 
 }

@@ -22,6 +22,7 @@ public class AssassinOffer implements Serializable {
 
     private int totalPrice;
     private int toolIndex;
+    private boolean isAvailable;
     private ArrayList<Integer> enchantmentData = new ArrayList<>();
 
     public AssassinOffer() {
@@ -48,9 +49,15 @@ public class AssassinOffer implements Serializable {
             this.enchantmentData.add(lvl);
         }
         if(this.totalPrice > 64) this.totalPrice = 64;
+        this.isAvailable = true;
     }
 
-    public int getPrice() { return totalPrice; }
+    public AssassinOffer(int totalPrice, int toolIndex, boolean isAvailable, ArrayList<Integer> enchantmentData){
+        this.totalPrice = totalPrice;
+        this.toolIndex = toolIndex;
+        this.isAvailable = isAvailable;
+        this.enchantmentData = enchantmentData;
+    }
 
     public ItemStack getItem(){
         ItemStack stack = new ItemStack(getItemFromIndex(this.toolIndex));
@@ -110,4 +117,16 @@ public class AssassinOffer implements Serializable {
         return 1;
     }
 
+    public boolean getAvailable() { return this.isAvailable; }
+    public void setAvailable(boolean isAvailable) { this.isAvailable = isAvailable; }
+
+    public int getToolIndex() {
+        return toolIndex;
+    }
+
+    public ArrayList<Integer> getEnchantmentData() {
+        return enchantmentData;
+    }
+
+    public int getPrice() { return totalPrice; }
 }

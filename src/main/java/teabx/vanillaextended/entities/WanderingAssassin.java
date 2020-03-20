@@ -22,19 +22,17 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 import teabx.vanillaextended.container.WanderingAssassinContainer;
 import teabx.vanillaextended.network.PacketHandler;
-import teabx.vanillaextended.network.UpdateAssassinOfferList;
+import teabx.vanillaextended.network.UpdateClientOfferList;
 
 import javax.annotation.Nullable;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 
 public class WanderingAssassin extends CreatureEntity implements INamedContainerProvider {
 
     private PlayerEntity customer;
-    private final NonNullList<ItemStack> slots = NonNullList.withSize(2, ItemStack.EMPTY);
-    private Inventory inventory = new Inventory(2);
+    private Inventory inventory = new Inventory(3);
     private ArrayList<AssassinOffer> offerList = new ArrayList<>();
 
     protected WanderingAssassin(EntityType<? extends CreatureEntity> type, World worldIn) {
@@ -49,15 +47,12 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
         int id = wanderingAssassin.getEntityId();
         if(!world.isRemote){
             NetworkHooks.openGui((ServerPlayerEntity) player, wanderingAssassin, new BlockPos(id,id,id));
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateAssassinOfferList(this));
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateClientOfferList(this));
         }
-        //if(!world.isRemote){
-        //    for(AssassinOffer ao : offerList){
-        //        System.out.println(ao.getPrice() + " " + ao.getItem());
-        //    }
-        //}
         return super.processInteract(player, hand);
     }
+
+
 
     @Nullable
     @Override
@@ -110,6 +105,8 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
     public Inventory getInventory() {
         return inventory;
     }
+
+    public void setInventory(Inventory inventory) { this.inventory = inventory; }
 
     public ArrayList<AssassinOffer> getOfferList() {
         return offerList;

@@ -11,11 +11,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
-public class UpdateAssassinOfferList {
+public class UpdateClientOfferList {
 
     private ArrayList<AssassinOffer> offerList;
 
-    public UpdateAssassinOfferList(PacketBuffer packetBuffer){
+    public UpdateClientOfferList(PacketBuffer packetBuffer){
         byte[] data = packetBuffer.readByteArray();
         if(data != null){
             try {
@@ -29,7 +29,7 @@ public class UpdateAssassinOfferList {
         }
     }
 
-    public UpdateAssassinOfferList(WanderingAssassin wanderingAssassin) {
+    public UpdateClientOfferList(WanderingAssassin wanderingAssassin) {
         this.offerList = wanderingAssassin.getOfferList();
     }
 
@@ -47,7 +47,7 @@ public class UpdateAssassinOfferList {
         }
     }
 
-    static void handle(final UpdateAssassinOfferList uao, Supplier<NetworkEvent.Context> context) {
+    static void handle(final UpdateClientOfferList uao, Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> {
             if(Minecraft.getInstance().player.openContainer instanceof WanderingAssassinContainer){
                 WanderingAssassinContainer was = (WanderingAssassinContainer) Minecraft.getInstance().player.openContainer;
