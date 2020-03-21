@@ -43,7 +43,6 @@ public class ProcessTradeRequest {
                             }
                             wac.wanderingAssassin.setOfferList(wac.offerList);
                             wac.inventorySlots.get(36).decrStackSize(wac.currentOffer.getPrice());
-                            System.out.println("Decreased stack size");
                             PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateClientOfferList(wac.wanderingAssassin));
                             wac.detectAndSendChanges();
                             context.get().setPacketHandled(true);

@@ -156,6 +156,12 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
         this.blit(i, j, 0, 0, this.xSize, this.ySize, 512, 512);
     }
 
+    @Override
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        this.font.drawString("Trade Offers", 4.0F, 7.0F, 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 107.0F, 74.0F, 4210752);
+    }
+
     private int map(double pos){
         int map_max = container.offerList.size() - 7;
         double l = this.guiTop + 18;
