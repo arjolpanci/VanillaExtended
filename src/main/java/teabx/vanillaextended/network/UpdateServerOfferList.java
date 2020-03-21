@@ -53,6 +53,7 @@ public class UpdateServerOfferList {
             if(context.get().getSender().openContainer instanceof WanderingAssassinContainer){
                 WanderingAssassinContainer wac = (WanderingAssassinContainer) context.get().getSender().openContainer;
                 wac.wanderingAssassin.setOfferList(uso.offerList);
+                context.get().setPacketHandled(true);
             }
         });
     }

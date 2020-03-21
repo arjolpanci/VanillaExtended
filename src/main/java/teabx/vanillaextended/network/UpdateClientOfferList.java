@@ -16,17 +16,21 @@ public class UpdateClientOfferList {
     private ArrayList<AssassinOffer> offerList;
 
     public UpdateClientOfferList(PacketBuffer packetBuffer){
-        byte[] data = packetBuffer.readByteArray();
-        if(data != null){
-            try {
-                ByteArrayInputStream bais = new ByteArrayInputStream(data);
-                ObjectInputStream ois = new ObjectInputStream(bais);
-                this.offerList = (ArrayList<AssassinOffer>) ois.readObject();
-                ois.close(); bais.close();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+        ArrayList<AssassinOffer> ao = new ArrayList<>();
+        int ln = packetBuffer.readInt();
+        for(int i=0; i<ln; i++){
+            int price = packetBuffer.readInt();
+            int toolIndex = packetBuffer.readInt();
+            boolean isAvailable = packetBuffer.readBoolean();
+            int enchSize = packetBuffer.readInt();
+            ArrayList<Integer> enchData = new ArrayList<>();
+            for(int j=0; j<enchSize; j++){
+                enchData.add(packetBuffer.readInt());
             }
+            AssassinOffer assassinOffer = new AssassinOffer(price, toolIndex, isAvailable, enchData);
+            ao.add(assassinOffer);
         }
+        this.offerList = ao;
     }
 
     public UpdateClientOfferList(WanderingAssassin wanderingAssassin) {
@@ -34,16 +38,15 @@ public class UpdateClientOfferList {
     }
 
     void encode(PacketBuffer packetBuffer) {
-        byte[] data;
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(offerList);
-            data = baos.toByteArray();
-            packetBuffer.writeByteArray(data);
-            oos.close(); baos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        packetBuffer.writeInt(offerList.size());
+        for(AssassinOffer offer : offerList){
+            packetBuffer.writeInt(offer.getPrice());
+            packetBuffer.writeInt(offer.getToolIndex());
+            packetBuffer.writeBoolean(offer.getAvailable());
+            packetBuffer.writeInt(offer.getEnchantmentData().size());
+            for(int i : offer.getEnchantmentData()){
+                packetBuffer.writeInt(i);
+            }
         }
     }
 
@@ -52,6 +55,7 @@ public class UpdateClientOfferList {
             if(Minecraft.getInstance().player.openContainer instanceof WanderingAssassinContainer){
                 WanderingAssassinContainer was = (WanderingAssassinContainer) Minecraft.getInstance().player.openContainer;
                 was.offerList = uao.offerList;
+                context.get().setPacketHandled(true);
             }
         });
     }
