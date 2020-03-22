@@ -17,7 +17,6 @@ import teabx.vanillaextended.entities.AssassinOffer;
 import teabx.vanillaextended.main.VanillaExtended;
 import teabx.vanillaextended.network.PacketHandler;
 import teabx.vanillaextended.network.UpdateTradeSelection;
-import teabx.vanillaextended.network.ValidateTradeInput;
 
 import java.util.ArrayList;
 
@@ -34,9 +33,6 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
         this.xSize = 276;
         this.ySize = 166;
         this.setSize(512, 512);
-        container.inventorySlots.get(38).putStack(ItemStack.EMPTY);
-        container.inventorySlots.get(37).putStack(ItemStack.EMPTY);
-        container.detectAndSendChanges();
     }
 
     @Override
@@ -50,7 +46,6 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
             int finalI = i;
             Button button = new Button(guiLeft + 5, guiTop + 18 + (20*i), 88, 20, "", p_onPress_1_ -> {
                 PacketHandler.INSTANCE.sendToServer(new UpdateTradeSelection(container, finalI+currentScroll));
-                PacketHandler.INSTANCE.sendToServer(new ValidateTradeInput(container.inventorySlots.get(36).getStack()));
             });
             button.visible = true;
             button.active = true;

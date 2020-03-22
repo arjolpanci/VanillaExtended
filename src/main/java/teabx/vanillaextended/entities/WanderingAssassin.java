@@ -10,10 +10,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
@@ -25,9 +23,7 @@ import teabx.vanillaextended.network.PacketHandler;
 import teabx.vanillaextended.network.UpdateClientOfferList;
 
 import javax.annotation.Nullable;
-import java.io.*;
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 
 public class WanderingAssassin extends CreatureEntity implements INamedContainerProvider {
@@ -53,8 +49,6 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
         return super.processInteract(player, hand);
     }
 
-
-
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
@@ -66,33 +60,39 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
-        byte[] data = null;
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
-            oos.writeObject(this.offerList);
-            data = baos.toByteArray();
-            oos.close(); baos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        compound.putInt("Size", offerList.size());
+        int cnt = 0;
+        for(AssassinOffer offer : offerList){
+            compound.putInt("Price" + cnt, offer.getPrice());
+            compound.putInt("ToolIndex" + cnt, offer.getToolIndex());
+            compound.putBoolean("Available" + cnt, offer.getAvailable());
+            compound.putInt("EnchDataSize" + cnt, offer.getEnchantmentData().size());
+            int cnt2 = 0;
+            for(int i : offer.getEnchantmentData()){
+                compound.putInt("EnchData" + cnt2++, i);
+            }
+            cnt++;
         }
-        compound.putByteArray("offer_list", data);
     }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        byte[] data = compound.getByteArray("offer_list");
-        if(data != null){
-            try {
-                ByteArrayInputStream bais = new ByteArrayInputStream(data);
-                ObjectInputStream ois = new ObjectInputStream(bais);
-                this.offerList = (ArrayList<AssassinOffer>) ois.readObject();
-                ois.close(); bais.close();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
+        ArrayList<AssassinOffer> ao = new ArrayList<>();
+        int cnt = compound.getInt("Size");
+        for(int i=0; i<cnt; i++){
+            int price = compound.getInt("Price" + i);
+            int toolIndex = compound.getInt("ToolIndex" + i);
+            boolean isAvailable = compound.getBoolean("Available" + i);
+            int enchSize = compound.getInt("EnchDataSize" + i);
+            ArrayList<Integer> enchData = new ArrayList<>();
+            for(int j=0; j<enchSize; j++){
+                enchData.add(compound.getInt("EnchData" + j));
             }
+            AssassinOffer assassinOffer = new AssassinOffer(price, toolIndex, isAvailable, enchData);
+            ao.add(assassinOffer);
         }
+        this.offerList = ao;
     }
 
     public void setCustomer(PlayerEntity customer) {

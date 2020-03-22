@@ -24,12 +24,10 @@ public class WanderingAssassinContainer extends Container {
     public ArrayList<AssassinOffer> offerList;
     public AssassinOffer currentOffer;
     public boolean tradeConfirmed = false;
-    private int entityID;
     public PlayerEntity playerEntity;
 
     public WanderingAssassinContainer(int id, PlayerInventory playerInventory, World world, BlockPos pos) {
         super(ContainerTypes.wanderingAssassinContainerType, id);
-        this.entityID = pos.getX();
         this.wanderingAssassin = (WanderingAssassin) world.getEntityByID(pos.getX());
         this.offerList = wanderingAssassin.getOfferList();
 
@@ -52,14 +50,23 @@ public class WanderingAssassinContainer extends Container {
         this.playerEntity = player;
     }
 
+    @Override
+    public void onContainerClosed(PlayerEntity playerIn) {
+        super.onContainerClosed(playerIn);
+        this.inventorySlots.get(38).putStack(ItemStack.EMPTY);
+        this.inventorySlots.get(37).putStack(ItemStack.EMPTY);
+    }
+
     public void validateTradeInput(ItemStack stack){
         if(playerEntity.openContainer instanceof WanderingAssassinContainer && this.canInteractWith(playerEntity)){
-            if(stack.getItem() == Items.GOLD_INGOT && (stack.getCount() >= this.currentOffer.getPrice())){
-                this.inventorySlots.get(37).putStack(this.currentOffer.getItem());
-                this.detectAndSendChanges();
-            }else{
-                this.inventorySlots.get(37).putStack(ItemStack.EMPTY);
-                this.detectAndSendChanges();
+            if(currentOffer != null){
+                if(this.currentOffer.getAvailable() && stack.getItem() == Items.GOLD_INGOT && (stack.getCount() >= this.currentOffer.getPrice())){
+                    this.inventorySlots.get(37).putStack(this.currentOffer.getItem());
+                    this.detectAndSendChanges();
+                }else{
+                    this.inventorySlots.get(37).putStack(ItemStack.EMPTY);
+                    this.detectAndSendChanges();
+                }
             }
         }
     }

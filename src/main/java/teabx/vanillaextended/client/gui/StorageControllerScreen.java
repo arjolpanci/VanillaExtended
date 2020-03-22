@@ -14,7 +14,6 @@ import teabx.vanillaextended.main.VanillaExtended;
 public class StorageControllerScreen extends ContainerScreen<StorageControllerContainer> {
 
     private static final ResourceLocation COLLECTIVE_STORAGE_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/csgui.png");
-    private static final ResourceLocation SCROLLBAR_TEXTURE = new ResourceLocation(VanillaExtended.MODID, "textures/gui/scrollbar.png");
     private boolean isScrolling = false;
     private double currentScroll;
 
@@ -28,9 +27,7 @@ public class StorageControllerScreen extends ContainerScreen<StorageControllerCo
     @Override
     public void init(Minecraft p_init_1_, int p_init_2_, int p_init_3_) {
         super.init(p_init_1_, p_init_2_, p_init_3_);
-        ImageButton scrollButton = new ImageButton(guiLeft + 175, guiTop + 18, 12, 36, 0, 0, 0,  SCROLLBAR_TEXTURE, p_onPress_1_ -> {
-            //button stuff
-        });
+        ImageButton scrollButton = new ImageButton(guiLeft + 175, guiTop + 18, 12, 15, 194, 0, 0, COLLECTIVE_STORAGE_TEXTURE, 512, 512 , p_onPress_1_ -> {});
         scrollButton.visible = true;
         scrollButton.active = false;
         buttons.add(scrollButton);
@@ -47,7 +44,7 @@ public class StorageControllerScreen extends ContainerScreen<StorageControllerCo
         if(this.isScrolling){
             double pos = p_mouseDragged_3_;
             double top = this.guiTop + 18;
-            double bottom = this.guiTop + 124 - 36;
+            double bottom = this.guiTop + 124 - 15;
             pos = MathHelper.clamp(pos, top, bottom);
             buttons.get(0).y = (int) pos;
             currentScroll = (pos-top)/(bottom-top);
@@ -69,7 +66,7 @@ public class StorageControllerScreen extends ContainerScreen<StorageControllerCo
     @Override
     public boolean mouseScrolled(double p_mouseScrolled_1_, double p_mouseScrolled_3_, double p_mouseScrolled_5_) {
         currentScroll = (int) (currentScroll - (p_mouseScrolled_5_ / (container.getInvSize()/5)));
-        currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 36);
+        currentScroll = MathHelper.clamp(currentScroll, this.guiTop + 18, this.guiTop + 124 - 15);
         buttons.get(0).y = (int) currentScroll;
         container.updateSlots(map(currentScroll));
         return false;
@@ -89,7 +86,7 @@ public class StorageControllerScreen extends ContainerScreen<StorageControllerCo
         int invSize = container.getInvSize()*9;
         int freeSpace = container.tile.getSb().getFreeSlots();
         this.font.drawString(freeSpace + "/" + invSize, 9.0F, 6.0F, 4210752);
-        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, 129.0F, 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, 131.0F, 4210752);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class StorageControllerScreen extends ContainerScreen<StorageControllerCo
     private int map(double pos){
         int map_max = (container.getInvSize()+1/9) - 6;
         double l = this.guiTop + 18;
-        double h = this.guiTop + 124 - 36;
+        double h = this.guiTop + 124 - 15;
         double n = (pos - l);
         double d = (h - l);
         double val = n/d;

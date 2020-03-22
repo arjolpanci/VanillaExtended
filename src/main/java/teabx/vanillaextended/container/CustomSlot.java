@@ -1,16 +1,9 @@
 package teabx.vanillaextended.container;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraftforge.fml.network.PacketDistributor;
-import teabx.vanillaextended.network.PacketHandler;
-import teabx.vanillaextended.network.ProcessTradeRequest;
-import teabx.vanillaextended.network.UpdateClientOfferList;
-import teabx.vanillaextended.network.ValidateTradeInput;
 
 public class CustomSlot extends Slot {
 
@@ -32,9 +25,6 @@ public class CustomSlot extends Slot {
                 wanderingAssassinContainer.processTradeRequest();
             }
         }
-        //if(thePlayer.world.isRemote()){
-        //    PacketHandler.INSTANCE.sendToServer(new ProcessTradeRequest(stack));
-        //}
         return super.onTake(thePlayer, stack);
     }
 
@@ -45,9 +35,6 @@ public class CustomSlot extends Slot {
                 wanderingAssassinContainer.validateTradeInput(this.getStack());
             }
         }
-        //if(this.canTakeStack && !isTradeSlot){
-        //    PacketHandler.INSTANCE.sendToServer(new ValidateTradeInput(this.getStack()));
-        //}
         super.onSlotChanged();
     }
 
