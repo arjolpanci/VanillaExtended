@@ -34,7 +34,9 @@ public class WanderingAssassinScreen extends ContainerScreen<WanderingAssassinCo
         this.xSize = 276;
         this.ySize = 166;
         this.setSize(512, 512);
-        PacketHandler.INSTANCE.sendToServer(new UpdateTradeSelection(container, -1));
+        container.inventorySlots.get(38).putStack(ItemStack.EMPTY);
+        container.inventorySlots.get(37).putStack(ItemStack.EMPTY);
+        container.detectAndSendChanges();
     }
 
     @Override

@@ -27,6 +27,7 @@ import teabx.vanillaextended.network.UpdateClientOfferList;
 import javax.annotation.Nullable;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 
 public class WanderingAssassin extends CreatureEntity implements INamedContainerProvider {
@@ -47,7 +48,7 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
         int id = wanderingAssassin.getEntityId();
         if(!world.isRemote){
             NetworkHooks.openGui((ServerPlayerEntity) player, wanderingAssassin, new BlockPos(id,id,id));
-            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new UpdateClientOfferList(this));
+            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateClientOfferList(this));
         }
         return super.processInteract(player, hand);
     }
@@ -120,6 +121,6 @@ public class WanderingAssassin extends CreatureEntity implements INamedContainer
     @Override
     public Container createMenu(int id, PlayerInventory playerInventory, PlayerEntity playerEntity) {
         int entityId = this.getEntityId();
-        return new WanderingAssassinContainer(id, playerInventory, this.getEntityWorld(), new BlockPos(entityId,entityId,entityId));
+        return new WanderingAssassinContainer(id, playerInventory, this.getEntityWorld(), new BlockPos(entityId,entityId,entityId), playerEntity);
     }
 }
