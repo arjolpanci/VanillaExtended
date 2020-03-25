@@ -16,19 +16,26 @@ public class EntityRegistry {
 
 
     //Entities
-    public static EntityType<?> LOST_MINER = EntityType.Builder.create(LostMiner::new, EntityClassification.MONSTER)
-            .build("lost_miner").setRegistryName(VanillaExtended.rloc("lost_miner"));
-    public static EntityType<?> SKELETON_KING = EntityType.Builder.create(SkeletonKing::new, EntityClassification.MONSTER)
-            .build("skeleton_king").setRegistryName(VanillaExtended.rloc("skeleton_king"));
-    public static EntityType<ZombieEntity> STAFF_ZOMBIE = (EntityType<ZombieEntity>) EntityType.Builder.create(StaffZombie::new, EntityClassification.MONSTER)
-            .build("staff_zombie").setRegistryName(VanillaExtended.rloc("staff_zombie"));
-    public static EntityType<?> WANDERING_ASSASSIN = EntityType.Builder.create(WanderingAssassin::new, EntityClassification.CREATURE)
-            .build("wandering_assassin").setRegistryName(VanillaExtended.rloc("wandering_assassin"));
+    public static EntityType<?> LOST_MINER;
+    public static EntityType<?> SKELETON_KING;
+    public static EntityType<ZombieEntity> STAFF_ZOMBIE;
+    public static EntityType<?> WANDERING_ASSASSIN;
 
     //Item Eggs
     public static Item lost_miner_egg;
     public static Item skeleton_king_egg;
     public static Item wandering_assassin_egg;
+
+    public static void buildEntities(){
+        LOST_MINER = EntityType.Builder.create(LostMiner::new, EntityClassification.MONSTER)
+                .build("lost_miner").setRegistryName(VanillaExtended.rloc("lost_miner"));
+        SKELETON_KING = EntityType.Builder.create(SkeletonKing::new, EntityClassification.MONSTER)
+                .build("skeleton_king").setRegistryName(VanillaExtended.rloc("skeleton_king"));
+        STAFF_ZOMBIE = (EntityType<ZombieEntity>) EntityType.Builder.create(StaffZombie::new, EntityClassification.MONSTER)
+                .build("staff_zombie").setRegistryName(VanillaExtended.rloc("staff_zombie"));
+        WANDERING_ASSASSIN = EntityType.Builder.create(WanderingAssassin::new, EntityClassification.CREATURE)
+                .build("wandering_assassin").setRegistryName(VanillaExtended.rloc("wandering_assassin"));
+    }
 
     public static void registerEntitySpawn(){
         getEntitySpawn(LOST_MINER, EntityClassification.MONSTER);

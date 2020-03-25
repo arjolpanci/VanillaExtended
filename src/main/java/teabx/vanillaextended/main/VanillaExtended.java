@@ -98,6 +98,7 @@ public class VanillaExtended
 
         @SubscribeEvent
         public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
+            EntityRegistry.buildEntities();
             event.getRegistry().registerAll(
                     EntityRegistry.LOST_MINER,
                     EntityRegistry.SKELETON_KING,
