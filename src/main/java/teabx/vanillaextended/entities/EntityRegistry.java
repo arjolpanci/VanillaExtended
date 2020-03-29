@@ -26,7 +26,7 @@ public class EntityRegistry {
     public static Item skeleton_king_egg;
     public static Item wandering_assassin_egg;
 
-    public static void buildEntities(){
+    public static void buildEntities() {
         LOST_MINER = EntityType.Builder.create(LostMiner::new, EntityClassification.MONSTER)
                 .build("lost_miner").setRegistryName(VanillaExtended.rloc("lost_miner"));
         SKELETON_KING = EntityType.Builder.create(SkeletonKing::new, EntityClassification.MONSTER)

@@ -1,15 +1,21 @@
 package teabx.vanillaextended.items;
 
 import net.minecraft.item.Item;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class ItemList {
 
     //Items
-    public static Item test_item;
-    public static Item king_bow;
-    public static Item lord_staff;
+    @ObjectHolder("vanillaextended:king_bow")
+    public static Item kingBow;
+
+    @ObjectHolder("vanillaextended:zombie_lord_staff")
+    public static Item lordStaff;
 
     //Block Items
-    public static Item collective_storage;
-    public static Item transport_pipe;
+    @ObjectHolder("vanillaextended:storage_controller")
+    public static Item storageControllerItem;
+
+    @ObjectHolder("vanillaextended:storage_connector")
+    public static Item storageConnectorItem;
 }

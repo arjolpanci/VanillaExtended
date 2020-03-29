@@ -1,6 +1,5 @@
 package teabx.vanillaextended.entities.goals;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
@@ -123,7 +122,7 @@ public class CustomBowAttackGoal extends RangedBowAttackGoal<SkeletonKing> {
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.entity.setActiveHand(ProjectileHelper.getHandWith(this.entity, ItemList.king_bow));
+                this.entity.setActiveHand(ProjectileHelper.getHandWith(this.entity, ItemList.kingBow));
             }
 
         }

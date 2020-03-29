@@ -1,4 +1,4 @@
-package teabx.vanillaextended.tools;
+package teabx.vanillaextended.items.tools;
 
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;

@@ -36,12 +36,10 @@ import teabx.vanillaextended.blocks.StorageController;
 import teabx.vanillaextended.capabilities.CapabilityRegistry;
 import teabx.vanillaextended.client.renders.RenderRegistry;
 import teabx.vanillaextended.entities.EntityRegistry;
-import teabx.vanillaextended.items.ItemList;
 import teabx.vanillaextended.items.KingBow;
 import teabx.vanillaextended.items.LordStaff;
 import teabx.vanillaextended.tileentities.StorageConnectorTile;
-import teabx.vanillaextended.tools.ToolList;
-import teabx.vanillaextended.tools.ToolMaterial;
+import teabx.vanillaextended.items.tools.ToolMaterial;
 
 @Mod("vanillaextended")
 public class VanillaExtended
@@ -51,7 +49,7 @@ public class VanillaExtended
     public static VanillaExtended instance;
     private static final String PROTOCOL_VERSION = "1";
 
-    public static ResourceLocation rloc(String name){ return new ResourceLocation(MODID, name);};
+    public static ResourceLocation rloc(String name){ return new ResourceLocation(MODID, name);}
 
     public VanillaExtended() {
         instance = this;
@@ -91,8 +89,8 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             event.getRegistry().registerAll(
-                    BlockList.storageController = new StorageController(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).harvestLevel(2)).setRegistryName(rloc("storage_controller")),
-                    BlockList.storageConnector = new StorageConnector(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName(rloc("storage_connector"))
+                    new StorageController(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).harvestLevel(2)).setRegistryName(rloc("storage_controller")),
+                    new StorageConnector(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD)).setRegistryName(rloc("storage_connector"))
             );
         }
 
@@ -133,16 +131,15 @@ public class VanillaExtended
         @SubscribeEvent
         public static void registerItems(final RegistryEvent.Register<Item> event) {
             event.getRegistry().registerAll(
-                    ItemList.test_item = new Item(new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("test_item")),
-                    ToolList.flint_axe = new AxeItem(ToolMaterial.flint, 6.5F, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_axe")),
-                    ToolList.flint_pickaxe = new PickaxeItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_pickaxe")),
-                    ToolList.flint_shovel = new ShovelItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_shovel")),
-                    ToolList.flint_hoe = new HoeItem(ToolMaterial.flint, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_hoe")),
-                    ToolList.flint_sword = new SwordItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_sword")),
-                    ItemList.king_bow = new KingBow(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("king_bow")),
-                    ItemList.lord_staff = new LordStaff(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("zombie_lord_staff")),
-                    ItemList.collective_storage = new BlockItem(BlockList.storageController, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageController.getRegistryName()),
-                    ItemList.transport_pipe = new BlockItem(BlockList.storageConnector, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageConnector.getRegistryName())
+                    new AxeItem(ToolMaterial.flint, 6.5F, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_axe")),
+                    new PickaxeItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_pickaxe")),
+                    new ShovelItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_shovel")),
+                    new HoeItem(ToolMaterial.flint, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_hoe")),
+                    new SwordItem(ToolMaterial.flint, 0, -3.2F, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(rloc("flint_sword")),
+                    new BlockItem(BlockList.storageController, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageController.getRegistryName()),
+                    new BlockItem(BlockList.storageConnector, new Item.Properties().group(ItemGroup.MISC)).setRegistryName(BlockList.storageConnector.getRegistryName()),
+                    new KingBow(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("king_bow")),
+                    new LordStaff(new Item.Properties().group(ItemGroup.MISC).maxDamage(200)).setRegistryName(rloc("zombie_lord_staff"))
             );
 
             EntityRegistry.registerSpawnEggs(event);

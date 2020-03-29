@@ -1,6 +1,5 @@
 package teabx.vanillaextended.entities;
 
-import net.minecraft.client.renderer.entity.model.SkeletonModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -12,7 +11,6 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -55,7 +53,7 @@ public class SkeletonKing extends MonsterEntity implements IRangedAttackMob {
     @Override
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
-        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemList.king_bow));
+        this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ItemList.kingBow));
         this.setActiveHand(Hand.MAIN_HAND);
     }
 
@@ -69,7 +67,7 @@ public class SkeletonKing extends MonsterEntity implements IRangedAttackMob {
 
     @Override
     public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-        ItemStack itemstack = this.findAmmo(new ItemStack(ItemList.king_bow));
+        ItemStack itemstack = this.findAmmo(new ItemStack(ItemList.kingBow));
         for(int i=0; i<3; i++){
             AbstractArrowEntity arrow = this.gen_arrow(itemstack, distanceFactor);
             arrow = ((KingBow)this.getHeldItemMainhand().getItem()).customeArrow(arrow);
